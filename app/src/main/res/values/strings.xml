@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">Weatho</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="splash_footer">Powered by AccuWeather</string>
+    <string name="delete">Delete</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="fontFamily">sans</string>
+    <string name="pref_temp_title">Temperature Unit</string>
+    <string-array name="pref_temp_list_titles">
+        <item>°C Celsius</item>
+        <item>°F Fahrenheit</item>
+    </string-array>
+    <string-array name="pref_temp_list_values">
+        <item>1</item>
+        <item>0</item>
+    </string-array>
+
+    <string name="pref_auto_update_title">Auto Update</string>
+    <string-array name="pref_auto_update_titles">
+        <item>1 minute</item>
+        <item>5 minutes</item>
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>3 hours</item>
+        <item>6 hours</item>
+        <item>12 hours</item>
+        <item>24 hours</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_auto_update_values">
+        <item>1</item>
+        <item>5</item>
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>720</item>
+        <item>1440</item>
+        <item>-1</item>
+    </string-array>
+    <string name="title_activity_detail_weather">DetailWeatherActivity</string>
+
+
+</resources>

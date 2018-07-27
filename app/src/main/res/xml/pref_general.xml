@@ -1,0 +1,23 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Basic Settings">
+    <ListPreference
+        android:defaultValue="1"
+        android:entries="@array/pref_temp_list_titles"
+        android:entryValues="@array/pref_temp_list_values"
+        android:key="temperature"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_temp_title" />
+
+    <ListPreference
+        android:defaultValue="60"
+        android:entries="@array/pref_auto_update_titles"
+        android:entryValues="@array/pref_auto_update_values"
+        android:key="autoUpdate"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_auto_update_title" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

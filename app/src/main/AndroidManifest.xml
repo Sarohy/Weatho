@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.sarohy.weatho.weatho">
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <!--<activity-->
+            <!--android:name=".View.Activity.SplashActivity"-->
+            <!--android:label="@string/app_name"-->
+            <!--android:theme="@style/SplashTheme">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
+        <activity
+            android:name=".View.Activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".View.Activity.LocationActivity" />
+        <activity
+            android:name=".View.Activity.AddLocationActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".View.Activity.SettingActivity"
+            android:label="@string/title_activity_settings" />
+        <activity android:name=".GeoLocationActivity" />
+        <activity
+            android:name=".View.Activity.DetailWeatherActivity"
+            android:label="@string/title_activity_detail_weather"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Test.TestActivity" />
+
+        <receiver
+            android:name=".WeatherUpdateReceiver"
+            android:enabled="true"
+            android:exported="true" />
+
+        <service
+            android:name=".WeatherFetchService"
+            android:exported="false" />
+
+        <activity android:name=".View.Activity.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
