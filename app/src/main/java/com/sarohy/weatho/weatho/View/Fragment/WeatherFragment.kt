@@ -8,6 +8,7 @@ import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
+import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
@@ -17,6 +18,7 @@ import android.view.*
 import android.view.animation.Interpolator
 import android.util.DisplayMetrics
 import android.util.Log
+import android.webkit.WebView
 import com.sarohy.weatho.weatho.Model.DBModel.WeatherCurrent
 import com.sarohy.weatho.weatho.Model.DBModel.Location
 import com.sarohy.weatho.weatho.Model.DBModel.WeatherDay
@@ -26,6 +28,7 @@ import com.sarohy.weatho.weatho.View.Activity.DetailWeatherActivity
 import com.sarohy.weatho.weatho.View.Adapter.DaysForecastRVAdapter
 import com.sarohy.weatho.weatho.ViewModel.WeatherViewModel
 import com.sarohy.weatho.weatho.ViewModel.WeatherViewModelFactory
+import kotlinx.android.synthetic.main.fragment_weather.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -39,11 +42,13 @@ class WeatherFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.O
     lateinit var daysForecastRVAdapter:DaysForecastRVAdapter;
     private lateinit var viewModel:WeatherViewModel
     lateinit var rootView:View
+    private lateinit var prefs:SharedPreferences
 
     @SuppressLint("ResourceType", "PrivateApi")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_weather, container, false)
+        prefs =PreferenceManager.getDefaultSharedPreferences(this.activity);
         animation()
         init()
         setup()
@@ -81,7 +86,7 @@ class WeatherFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.O
         rootView.rv_day_forecast.setItemAnimator(DefaultItemAnimator())
         rootView.rv_day_forecast.setLayoutManager(mLayoutManager)
         rootView.rv_day_forecast.setAdapter(daysForecastRVAdapter)
-        rootView.cv_header.setOnClickListener(this)
+        rootView.wv_weather.setOnClickListener(this)
     }
 
     private fun animation() {
@@ -101,16 +106,18 @@ class WeatherFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.O
 
 
     private fun updateUI(rootView: View) {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this.activity)
         val temperatureUnit = Integer.parseInt(prefs.getString("temperature", "1")!!)
-        rootView.tv_temperature.text = Utils.showCurrentWeather(temperatureUnit,
-                weatherCurrent.temperature,weatherCurrent.temperatureUnit)
-        rootView.tv_phrase.text = weatherCurrent.weatherText
-//        val weatherDay = daysForecastRVAdapter.getItem(0);
-//        rootView.tv_hi_low_temp.text = Utils.showHiLowWeather(temperatureUnit,
-//                weatherDay.temperatureMax,weatherDay.temperatureMin,weatherDay.temperatureUnit)
-        rootView.cl_header.setBackgroundResource(Utils.getHeaderImage())
-        rootView.iv_weather_icon.setImageResource(Utils.getWeatherIcon(weatherCurrent.weatherIcon))
+        val webSetting = rootView.wv_weather.getSettings()
+        webSetting.setJavaScriptEnabled(true)
+        rootView.wv_weather.loadUrl("file:///android_asset/index.html")
+        val s = Utils.showCurrentWeather(temperatureUnit, weatherCurrent.temperature,weatherCurrent.temperatureUnit)
+        val str = "javascript:myJavaScriptFunc('"+s+"',"+Utils.mapOfWeather(weatherCurrent.weatherIcon)+",'"+weatherCurrent.weatherText+"')"
+        Log.d("Tested",str)
+        rootView.wv_weather.webViewClient = object : android.webkit.WebViewClient() {
+            override fun onPageFinished(view: WebView, url: String) {
+                rootView.wv_weather.loadUrl(str)
+            }
+        }
         rootView.main_layout.isRefreshing = false;
     }
 
@@ -127,7 +134,7 @@ class WeatherFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.O
         viewModel.updateWeatherInfo();
     }
     override fun onClick(v: View?) {
-        if (v?.id==R.id.cv_header){
+        if (v?.id==R.id.wv_weather){
             val i = Intent(activity,DetailWeatherActivity::class.java)
             i.putExtra("Location",city)
             startActivity(i)

@@ -42,6 +42,8 @@ class MainActivity : AppCompatActivity() {
         setup()
         observers()
         alarmManager()
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone("America/Vancouver"),Locale.US)
+        Log.d("Tested",(calendar.time).toString())
     }
 
     private fun init() {

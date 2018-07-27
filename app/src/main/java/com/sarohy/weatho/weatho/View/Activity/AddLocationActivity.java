@@ -25,11 +25,14 @@ import android.widget.Toast;
 
 import com.sarohy.weatho.weatho.Model.APIModel.City;
 import com.sarohy.weatho.weatho.R;
+import com.sarohy.weatho.weatho.Utils;
 import com.sarohy.weatho.weatho.View.Adapter.CityRVAdapter;
 import com.sarohy.weatho.weatho.RecyclerTouchListener;
 import com.sarohy.weatho.weatho.ViewModel.CityViewModel;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,6 +58,7 @@ public class AddLocationActivity extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_add_location);
         ButterKnife.bind(this);
         init();
+
     }
 
     private void setup() {

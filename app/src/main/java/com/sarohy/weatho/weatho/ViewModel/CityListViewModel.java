@@ -38,7 +38,6 @@ public class CityListViewModel extends AndroidViewModel {
     public void insertCity(Location city){
         projectRepository.addLocation(city);
         projectRepository.loadAllData(city.getKey());
-        Objects.requireNonNull(cities.getValue()).add(city);
     }
 
     public void deleteCity(Location city){

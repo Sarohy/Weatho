@@ -44,11 +44,12 @@ public class CityViewModel extends AndroidViewModel implements ProjectRepository
     }
 
     public boolean checkIsEntered(City c) {
-        for (Location location : Objects.requireNonNull(citiesAdded.getValue())) {
-            if (c.getKey().equals(location.getKey())) {
-                return true;
-            }
-        }
+//        for (int i=0;i<citiesAdded.getValue().size();i++) {
+//            Location location = citiesAdded.getValue().get(i);
+//            if (c.getKey().equals(location.getKey())) {
+//                return true;
+//            }
+//        }
         return false;
     }
 

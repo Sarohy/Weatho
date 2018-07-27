@@ -8,14 +8,14 @@
     <RelativeLayout
         android:id="@+id/view_background"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:padding="@dimen/padd_10">
 
         <RelativeLayout
             android:padding="@dimen/padd_10"
             android:background="@color/bg_row_background"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="200dp">
         <ImageView
             android:id="@+id/delete_icon"
             android:layout_width="@dimen/ic_delete"
@@ -39,23 +39,35 @@
     <RelativeLayout
         android:id="@+id/view_foreground"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:padding="@dimen/padd_10">
+
         <android.support.v7.widget.CardView
-            android:elevation="12dp"
-            android:background="#fff"
-            android:padding="@dimen/padd_10"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        <TextView
-            android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:fontFamily="sans-serif-medium"
-            android:maxLines="1"
-            tools:text="Hello"
-            android:textSize="24sp" />
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:background="#fff"
+            android:elevation="12dp"
+            android:padding="@dimen/padd_10">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:contentDescription="Src"
+                android:scaleType="fitXY"
+                android:src="@drawable/moon" />
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif-medium"
+                android:maxLines="1"
+                android:textColor="@android:color/white"
+                android:textSize="24sp"
+                tools:text="Hello" />
         </android.support.v7.widget.CardView>
     </RelativeLayout>
 

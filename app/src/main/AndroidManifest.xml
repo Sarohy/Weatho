@@ -38,7 +38,7 @@
             android:name=".View.Activity.DetailWeatherActivity"
             android:label="@string/title_activity_detail_weather"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Test.TestActivity" />
+        <activity android:name=".Test.Test2Activity" />
 
         <receiver
             android:name=".WeatherUpdateReceiver"

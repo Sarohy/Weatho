@@ -61,6 +61,30 @@ public class Utils {
             R.drawable.w41,R.drawable.w41,
             R.drawable.w43,R.drawable.w44
     };
+    private static final int [] weatherAnimation = {
+            4,4,
+            4,5,
+            7,5,
+            5,5,
+            7,7,
+            1,2,
+            2,2,
+            3,3,
+            3,2,
+            0,0,
+            0,0,
+            0,0,
+            6,2,
+            7,7,
+            6,5,
+            7,1,
+            5,5,
+            6,6,
+            7,6,
+            2,2,
+            3,3,
+            0,0
+    };
 
 
 
@@ -211,6 +235,11 @@ public class Utils {
     public static CharSequence DateToTime(@Nullable Date date) {
         @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("HH:mm");
         return df.format(date);
+    }
+
+    @Nullable
+    public static int mapOfWeather(@Nullable String weatherIcon) {
+        return weatherAnimation[Integer.parseInt(weatherIcon)];
     }
 
 
