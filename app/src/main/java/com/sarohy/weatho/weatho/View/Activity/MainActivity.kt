@@ -24,6 +24,7 @@ import java.util.*
 import android.os.Build
 import android.support.annotation.RequiresApi
 import android.support.v4.view.PagerAdapter
+import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
@@ -101,12 +102,15 @@ class MainActivity : AppCompatActivity() {
     inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
 
         var array:ArrayList<Location>
+
         init {
             array = ArrayList<Location>()
         }
 
         override fun getItem(position: Int): Fragment {
-            return WeatherFragment.newInstance(array.get(position))
+            var f = WeatherFragment.newInstance(array.get(position))
+            f.retainInstance = true
+            return f
         }
 
         override fun getCount(): Int {
@@ -124,11 +128,15 @@ class MainActivity : AppCompatActivity() {
             return POSITION_NONE
         }
 
+        fun update() {
+            notifyDataSetChanged()
+        }
+
     }
 
     override fun onResume() {
-        //viewModel.load()
         alarmManager()
+        mSectionsPagerAdapter?.update()
         super.onResume()
     }
 }

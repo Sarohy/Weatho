@@ -39,9 +39,9 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
     //retrofit
-    compile 'com.squareup.retrofit2:retrofit:2.4.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-    compile 'com.google.code.gson:gson:2.8.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
+    implementation 'com.google.code.gson:gson:2.8.0'
 
     //MVVM
     def lifecycle_version = "1.1.1"
@@ -50,8 +50,8 @@ dependencies {
 
     //Room
     def archRoomVersion = "1.0.0"
-    compile 'android.arch.persistence.room:runtime:' + archRoomVersion;
+    implementation 'android.arch.persistence.room:runtime:' + archRoomVersion;
     annotationProcessor 'android.arch.persistence.room:compiler:' + archRoomVersion;
 
-    compile 'com.google.android.gms:play-services-location:15.0.1'
+    implementation 'com.google.android.gms:play-services-location:15.0.1'
 }

@@ -27,7 +27,6 @@ class DetailWeatherViewModel(application: Application, key:String) : AndroidView
 
     fun updateWeatherInfo() {
         projectRepository.fetchHourlyData(cityKey,weatherDay)
-        //loadData()
     }
 
 }

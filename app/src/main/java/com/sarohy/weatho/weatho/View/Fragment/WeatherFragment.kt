@@ -19,10 +19,12 @@ import android.view.animation.Interpolator
 import android.util.DisplayMetrics
 import android.util.Log
 import android.webkit.WebView
+import android.widget.Toast
 import com.sarohy.weatho.weatho.Model.DBModel.WeatherCurrent
 import com.sarohy.weatho.weatho.Model.DBModel.Location
 import com.sarohy.weatho.weatho.Model.DBModel.WeatherDay
 import com.sarohy.weatho.weatho.R
+import com.sarohy.weatho.weatho.RecyclerTouchListener
 import com.sarohy.weatho.weatho.Utils
 import com.sarohy.weatho.weatho.View.Activity.DetailWeatherActivity
 import com.sarohy.weatho.weatho.View.Adapter.DaysForecastRVAdapter
@@ -33,7 +35,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class WeatherFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickListener{
+class WeatherFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener{
 
 
 
@@ -86,7 +88,19 @@ class WeatherFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.O
         rootView.rv_day_forecast.setItemAnimator(DefaultItemAnimator())
         rootView.rv_day_forecast.setLayoutManager(mLayoutManager)
         rootView.rv_day_forecast.setAdapter(daysForecastRVAdapter)
-        rootView.wv_weather.setOnClickListener(this)
+        rootView.rv_day_forecast.addOnItemTouchListener(RecyclerTouchListener(context, rootView.rv_day_forecast, object : RecyclerTouchListener.ClickListener {
+            override fun onClick(view: View, position: Int) {
+                if (position==0){
+                    val i = Intent(activity,DetailWeatherActivity::class.java)
+                    i.putExtra("Location",city)
+                    startActivity(i)
+                }
+            }
+
+            override fun onLongClick(view: View, position: Int) {
+
+            }
+        }))
     }
 
     private fun animation() {
@@ -130,15 +144,7 @@ class WeatherFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.O
         }
     }
     override fun onRefresh() {
-        Log.d("SwipeCheck","Refresh")
         viewModel.updateWeatherInfo();
-    }
-    override fun onClick(v: View?) {
-        if (v?.id==R.id.wv_weather){
-            val i = Intent(activity,DetailWeatherActivity::class.java)
-            i.putExtra("Location",city)
-            startActivity(i)
-        }
     }
 }
 
