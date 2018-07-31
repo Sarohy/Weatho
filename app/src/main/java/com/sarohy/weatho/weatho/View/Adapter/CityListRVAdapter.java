@@ -24,12 +24,13 @@ public class CityListRVAdapter extends RecyclerView.Adapter<CityListRVAdapter.My
     private List<Location> dataListAllItems;
     private Activity context;
 
+
     public void updateList(List<Location> fetch) {
         dataListAllItems.clear();
         dataListAllItems.addAll(fetch);
     }
 
-
+    SharedPreferences sharedPreferences;
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView  locationName, temperature;
         ImageButton homeBtn;
@@ -55,7 +56,8 @@ public class CityListRVAdapter extends RecyclerView.Adapter<CityListRVAdapter.My
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_cities_list, parent, false);
-
+        sharedPreferences = context.getSharedPreferences(Utils.City,
+                Context.MODE_PRIVATE);
         return new MyViewHolder(itemView);
     }
 
@@ -63,18 +65,18 @@ public class CityListRVAdapter extends RecyclerView.Adapter<CityListRVAdapter.My
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         final Location city = dataListAllItems.get(position);
         holder.locationName.setText(city.getDataToDisplay());
-        if (city.getHome()){
+        String homeKey =sharedPreferences.getString(Utils.CityKey,"-1");
+        if (city.getKey().equals(homeKey)){
             holder.homeBtn.setImageResource(R.drawable.ic_home_white_selected_24dp);
         }
         else{
             holder.homeBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    SharedPreferences sharedPreferences = context.getSharedPreferences(Utils.City,
-                            Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString(Utils.CityKey,city.getKey());
                     editor.apply();
+                    context.finish();
                 }
             });
         }

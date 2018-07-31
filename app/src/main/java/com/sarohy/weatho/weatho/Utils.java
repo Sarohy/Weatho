@@ -138,7 +138,7 @@ public class Utils {
 
     public static Location cityAPItoDB(City c){
         return new Location(c.getKey(),c.getAdministrativeArea().getLocalizedName(),
-                c.getLocalizedName(),c.getCountry().getLocalizedName(),false);
+                c.getLocalizedName(),c.getCountry().getLocalizedName());
     }
 
     public static WeatherDay weatherAPItoDB(String cityKey,DayForecast d) {

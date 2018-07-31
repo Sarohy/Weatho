@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class GeoLocationViewModel extends AndroidViewModel implements ProjectRepository.CallBack {
     ProjectRepository projectRepository;
-    MutableLiveData<Location> locationMutableLiveData;
+    MutableLiveData<Location> locationMutableLiveData = new MutableLiveData<>();
     public GeoLocationViewModel(@NonNull Application application) {
         super(application);
         projectRepository = ProjectRepository.getInstance(application);
@@ -35,5 +35,10 @@ public class GeoLocationViewModel extends AndroidViewModel implements ProjectRep
 
     public LiveData<Location> getLocation() {
         return locationMutableLiveData;
+    }
+
+    public void addLocation(Location location) {
+        projectRepository.loadAllData(location.getKey());
+        projectRepository.addLocation(location);
     }
 }

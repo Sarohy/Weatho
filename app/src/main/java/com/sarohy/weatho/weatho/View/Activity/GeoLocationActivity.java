@@ -1,6 +1,7 @@
 package com.sarohy.weatho.weatho.View.Activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
@@ -71,6 +72,27 @@ public class GeoLocationActivity extends AppCompatActivity implements
 
     GeoLocationViewModel viewModel;
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case 150:
+                if (grantResults[0]==0) {
+                    Log.d("Tested", String.valueOf(grantResults[0]));
+                    mGoogleApiClient = new GoogleApiClient.Builder(this)
+                            .addConnectionCallbacks(this)
+                            .addOnConnectionFailedListener(this)
+                            .addApi(LocationServices.API)
+                            .build();
+
+                    if (mGoogleApiClient != null) {
+                        mGoogleApiClient.connect();
+                    } else
+                        Toast.makeText(this, "Not Connected!", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,23 +109,12 @@ public class GeoLocationActivity extends AppCompatActivity implements
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-
-            // Permission is not granted
-            // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
             } else {
-                // No explanation needed; request the permission
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        1);
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
+                        150);
             }
         } else {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -116,13 +127,10 @@ public class GeoLocationActivity extends AppCompatActivity implements
                 mGoogleApiClient.connect();
             } else
                 Toast.makeText(this, "Not Connected!", Toast.LENGTH_SHORT).show();
-
-            // Permission has already been granted
         }
 
     }
 
-    /*Ending the updates for the location service*/
     @Override
     protected void onStop() {
         mGoogleApiClient.disconnect();
@@ -154,7 +162,6 @@ public class GeoLocationActivity extends AppCompatActivity implements
         }
     }
 
-    /*Method to get the enable location settings dialog*/
     public void settingRequest() {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(10000);    // 10 seconds, in milliseconds
@@ -176,24 +183,16 @@ public class GeoLocationActivity extends AppCompatActivity implements
                 final LocationSettingsStates state = result.getLocationSettingsStates();
                 switch (status.getStatusCode()) {
                     case LocationSettingsStatusCodes.SUCCESS:
-                        // All location settings are satisfied. The client can
-                        // initialize location requests here.
                         getLocation();
                         break;
                     case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                        // Location settings are not satisfied, but this can be fixed
-                        // by showing the user a dialog.
                         try {
-                            // Show the dialog by calling startResolutionForResult(),
-                            // and check the result in onActivityResult().
                             status.startResolutionForResult(GeoLocationActivity.this, 1000);
                         } catch (SendIntentException e) {
                             // Ignore the error.
                         }
                         break;
                     case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                        // Location settings are not satisfied. However, we have no way
-                        // to fix the settings so we won't show the dialog.
                         break;
                 }
             }
@@ -203,7 +202,6 @@ public class GeoLocationActivity extends AppCompatActivity implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        final LocationSettingsStates states = LocationSettingsStates.fromIntent(data);
         switch (requestCode) {
             case 1000:
                 switch (resultCode) {
@@ -219,41 +217,29 @@ public class GeoLocationActivity extends AppCompatActivity implements
                         break;
                 }
                 break;
+
         }
     }
 
     public void getLocation() {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         } else {
-            /*Getting the location after aquiring location service*/
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                     mGoogleApiClient);
 
             if (mLastLocation != null) {
                 updateUI();
             } else {
-                /*if there is no last known location. Which means the device has no data for the loction currently.
-                 * So we will get the current location.
-                 * For this we'll implement Location Listener and override onLocationChanged*/
                 Log.i("Current Location", "No data for location found");
-
                 if (!mGoogleApiClient.isConnected())
                     mGoogleApiClient.connect();
-
                 LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
             }
         }
     }
     com.sarohy.weatho.weatho.Model.DBModel.Location[] locationDB;
-    ProjectRepository projectRepository;
+    @SuppressLint("SetTextI18n")
     private void updateUI() {
         locationDB = new com.sarohy.weatho.weatho.Model.DBModel.Location[1];
         viewModel.fetchLocation(String.valueOf(mLastLocation.getLatitude()),String.valueOf(mLastLocation.getLongitude()));
@@ -272,7 +258,6 @@ public class GeoLocationActivity extends AppCompatActivity implements
         tvLongitude.setText("Longitude: " + String.valueOf(mLastLocation.getLongitude()));
     }
 
-    /*When Location changes, this method get called. */
     @Override
     public void onLocationChanged(Location location) {
         mLastLocation = location;
@@ -283,13 +268,14 @@ public class GeoLocationActivity extends AppCompatActivity implements
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.fab_done:
-                projectRepository.addLocation(locationDB[0]);
+                viewModel.addLocation(locationDB[0]);
                 SharedPreferences sharedPreferences = getSharedPreferences(Utils.City,
                         Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString(Utils.CityKey,locationDB[0].getKey());
                 editor.apply();
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                finish();
                 break;
             case R.id.fab_refresh:
                 pbLoad.setVisibility(View.VISIBLE);
