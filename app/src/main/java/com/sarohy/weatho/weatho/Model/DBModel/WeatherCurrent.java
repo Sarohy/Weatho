@@ -46,7 +46,9 @@ public class WeatherCurrent {
 
     }
 
-    public WeatherCurrent(int key, String cityKey, String weatherIcon, String weatherText, String mobileLink, String isDayTime, Date localObservationDateTime, String temperature, String temperatureUnit) {
+    public WeatherCurrent(int key, String cityKey, String weatherIcon, String weatherText,
+                          String mobileLink, String isDayTime, Date localObservationDateTime,
+                          String temperature, String temperatureUnit) {
         this.key = key;
         CityKey = cityKey;
         WeatherIcon = weatherIcon;

@@ -9,10 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.sarohy.weatho.weatho.Model.DBModel.WeatherDay
 import com.sarohy.weatho.weatho.R
 import com.sarohy.weatho.weatho.Utils
 import kotlinx.android.synthetic.main.item_day_forecast_list.view.*
+import com.bumptech.glide.request.RequestOptions
+
+
 
 class DaysForecastRVAdapter(citiesList: ArrayList<WeatherDay>, context: Activity) : RecyclerView.Adapter<DaysForecastRVAdapter.MyViewHolder>() {
     private lateinit var dataListAllItems: ArrayList<WeatherDay>
@@ -57,8 +61,14 @@ class DaysForecastRVAdapter(citiesList: ArrayList<WeatherDay>, context: Activity
         holder.date.text =  Utils.DateToString(weatherDay.date)
         holder.nightPhrase.text = weatherDay.iconPhraseNight
         holder.dayPhrase.text = weatherDay.iconPhraseDay
-        holder.nightImage.setImageResource(Utils.getWeatherIcon(weatherDay.iconNight.toString()))
-        holder.dayImage.setImageResource(Utils.getWeatherIcon(weatherDay.iconDay.toString()))
+        val requestOptions1 = RequestOptions()
+        requestOptions1.placeholder(Utils.getWeatherIcon(weatherDay.iconNight.toString()))
+        val requestOptions2 = RequestOptions()
+        requestOptions2.placeholder(Utils.getWeatherIcon(weatherDay.iconDay.toString()))
+        Glide.with(context).load(Utils.getWeatherIconLink(weatherDay.iconNight.toString()))
+                .apply(requestOptions1).into(holder.nightImage)
+        Glide.with(context).load(Utils.getWeatherIconLink(weatherDay.iconDay.toString()))
+               .apply(requestOptions2).into(holder.dayImage)
     }
 
     override fun getItemCount(): Int {

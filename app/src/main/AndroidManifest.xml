@@ -51,7 +51,8 @@
             android:name=".WeatherFetchService"
             android:exported="false" />
 
-        <activity android:name=".View.Activity.SplashActivity">
+        <activity android:name=".View.Activity.SplashActivity"
+            android:theme="@style/SplashTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

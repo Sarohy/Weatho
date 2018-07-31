@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.sarohy.weatho.weatho.Model.DBModel.WeatherHour
 import com.sarohy.weatho.weatho.R
 import com.sarohy.weatho.weatho.Utils
@@ -52,7 +54,10 @@ class HourForecastRVAdapter(citiesList: ArrayList<WeatherHour>, context: Activit
         holder.temperature.text = Utils.showCurrentWeather(temperatureUnit,weatherDay.temperature,weatherDay.temperatureUnit)
         holder.phrase.text = weatherDay.weatherText
         holder.time.text = Utils.DateToTime(weatherDay.localObservationDateTime)
-        holder.tempImange.setImageResource(Utils.getWeatherIcon(weatherDay.weatherIcon.toString()))
+        val requestOptions = RequestOptions()
+        requestOptions.placeholder(Utils.getWeatherIcon(weatherDay.weatherIcon.toString()))
+        Glide.with(context).load(Utils.getWeatherIconLink(weatherDay.weatherIcon.toString()))
+                .apply(requestOptions).into(holder.tempImange)
     }
 
     override fun getItemCount(): Int {

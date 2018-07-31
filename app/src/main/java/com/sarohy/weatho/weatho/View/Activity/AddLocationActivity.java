@@ -126,6 +126,7 @@ public class AddLocationActivity extends AppCompatActivity implements View.OnCli
     }
 
     @SuppressLint("LongLogTag")
+
     @Override
     public void onTextChanged(final CharSequence charSequence, int start, int before, int count) {
         Log.d(LOG_TAG, String.valueOf(charSequence));
