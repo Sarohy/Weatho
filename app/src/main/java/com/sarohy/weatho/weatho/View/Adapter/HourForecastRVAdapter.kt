@@ -68,7 +68,7 @@ class HourForecastRVAdapter(citiesList: ArrayList<WeatherHour>, context: Activit
         return dataListAllItems.get(i)
     }
 
-    fun setArray(fetches: ArrayList<WeatherHour>?) {
+    fun setArray(fetches: List<WeatherHour>?) {
         dataListAllItems.clear()
         dataListAllItems.addAll(fetches!!)
     }

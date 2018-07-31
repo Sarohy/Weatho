@@ -59,12 +59,14 @@ class MainActivity : AppCompatActivity() {
     private fun alarmManager() {
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         val autoUpdate = Integer.parseInt(prefs.getString("autoUpdate", "60")!!)
-        val alarmMgr = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(this, WeatherUpdateReceiver::class.java)
-        val alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
-        val calendar = Calendar.getInstance()
-        Log.d(LOG_TAG, autoUpdate.toString());
-        alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP,calendar.timeInMillis+(1000 * 60 * autoUpdate).toLong(), (1000 * 60 * autoUpdate).toLong(), alarmIntent)
+        if (autoUpdate != -1) {
+            val alarmMgr = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            val intent = Intent(this, WeatherUpdateReceiver::class.java)
+            val alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
+            val calendar = Calendar.getInstance()
+            Log.d(LOG_TAG, autoUpdate.toString());
+            alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis + (1000 * 60 * autoUpdate).toLong(), (1000 * 60 * autoUpdate).toLong(), alarmIntent)
+        }
     }
 
     private fun observers() {

@@ -8,11 +8,10 @@ import android.support.annotation.NonNull;
 
 import com.sarohy.weatho.weatho.Model.APIModel.City;
 import com.sarohy.weatho.weatho.Model.DBModel.Location;
-import com.sarohy.weatho.weatho.ProjectRepository;
+import com.sarohy.weatho.weatho.Model.ProjectRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class CityViewModel extends AndroidViewModel implements ProjectRepository.CallBack {
     private ArrayList<City>Cities = new ArrayList<>();
@@ -23,7 +22,7 @@ public class CityViewModel extends AndroidViewModel implements ProjectRepository
 
     public CityViewModel(@NonNull Application application) {
         super(application);
-        projectRepository = ProjectRepository.getInstance(application);
+        projectRepository = new ProjectRepository(application);
         fetched.setValue(false);
         citiesAdded = projectRepository.loadLocationFromDB();
     }

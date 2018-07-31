@@ -108,7 +108,7 @@ public class Utils {
             "https://www.developer.accuweather.com/sites/default/files/19-s.png",
             "https://www.developer.accuweather.com/sites/default/files/20-s.png",
             "https://www.developer.accuweather.com/sites/default/files/21-s.png",
-            "https://www.developer.accuweather.com/sites/default/files/22s.png",
+            "https://www.developer.accuweather.com/sites/default/files/22-s.png",
             "https://www.developer.accuweather.com/sites/default/files/23-s.png",
             "https://www.developer.accuweather.com/sites/default/files/24-s.png",
             "https://www.developer.accuweather.com/sites/default/files/25-s.png",

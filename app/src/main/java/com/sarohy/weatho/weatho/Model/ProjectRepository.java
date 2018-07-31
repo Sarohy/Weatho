@@ -1,13 +1,11 @@
-package com.sarohy.weatho.weatho;
+package com.sarohy.weatho.weatho.Model;
 
-import android.annotation.SuppressLint;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -26,6 +24,8 @@ import com.sarohy.weatho.weatho.Model.DBModel.WeatherCurrent;
 import com.sarohy.weatho.weatho.Model.DBModel.Location;
 import com.sarohy.weatho.weatho.Model.DBModel.WeatherHour;
 import com.sarohy.weatho.weatho.Model.DBModel.WeatherDay;
+import com.sarohy.weatho.weatho.R;
+import com.sarohy.weatho.weatho.Utils;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -42,29 +42,18 @@ import retrofit2.Response;
 public class ProjectRepository {
     private static final String LOG_TAG = ProjectRepository.class.getSimpleName();
 
-    // For Singleton instantiation
-    private static final Object LOCK = new Object();
-    @SuppressLint("StaticFieldLeak")
-    private static ProjectRepository projectRepository;
     private final AppDatabase appDatabase;
     private APIInterface apiService;
     private String API_KEY;
     private Context context;
     private String toastMessage = "Request Overflowed!!";
 
-    private ProjectRepository(Context context) {
+    public ProjectRepository(Context context) {
         this.API_KEY = Utils.API_KEY4;
         this.context = context;
         apiService = APIClient.getClient().create(APIInterface.class);
         appDatabase = AppDatabase.getAppDatabase(context);
 
-    }
-
-    public synchronized static ProjectRepository getInstance(Context context) {
-        if (projectRepository == null) {
-            projectRepository = new ProjectRepository(context);
-        }
-        return projectRepository;
     }
 
     public LiveData<List<Location>> loadLocationFromDB() {
@@ -148,7 +137,7 @@ public class ProjectRepository {
         });
     }
 
-    public void fetchHourlyData(final String cityKey, final MutableLiveData<ArrayList<WeatherHour>> liveData) {
+    public void fetchHourlyData(final String cityKey) {
         Call<ArrayList<HourForecast>> call = apiService.get12HoursForecast(cityKey, API_KEY);
         call.enqueue(new Callback<ArrayList<HourForecast>>() {
             @Override
@@ -167,7 +156,6 @@ public class ProjectRepository {
                                     array.add(weather12Hour);
                                     appDatabase.weatherOf12HoursDAO().insertAll(weather12Hour);
                                 }
-                                liveData.postValue(array);
                             }
                         });
                         t.start();
@@ -244,21 +232,14 @@ public class ProjectRepository {
         return(appDatabase.currentWeatherDAO().forecastByCity(cityKey));
     }
 
-    public void loadHourlyDataFromDB(@NotNull final String cityKey, @NotNull final MutableLiveData<ArrayList<WeatherHour>> weatherDay) {
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                ArrayList<WeatherHour> arrayList = (ArrayList<WeatherHour>) appDatabase.weatherOf12HoursDAO().forecastByCity(cityKey);
-                weatherDay.postValue(arrayList);
-            }
-        });
-        t.start();
+    public LiveData<List<WeatherHour>> loadHourlyDataFromDB(@NotNull final String cityKey) {
+        return  appDatabase.weatherOf12HoursDAO().forecastByCity(cityKey);
     }
 
     public void loadAllData(String key) {
         fetchDayForecast(key);
         fetchCurrentWeather(key);
-        fetchHourlyData(key, new MutableLiveData<ArrayList<WeatherHour>>());
+        fetchHourlyData(key);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

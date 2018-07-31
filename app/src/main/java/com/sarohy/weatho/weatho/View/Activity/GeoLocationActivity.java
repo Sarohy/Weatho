@@ -3,7 +3,6 @@ package com.sarohy.weatho.weatho.View.Activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -17,7 +16,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -42,10 +40,8 @@ import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 
-import com.sarohy.weatho.weatho.ProjectRepository;
 import com.sarohy.weatho.weatho.R;
 import com.sarohy.weatho.weatho.Utils;
-import com.sarohy.weatho.weatho.ViewModel.CityViewModel;
 import com.sarohy.weatho.weatho.ViewModel.GeoLocationViewModel;
 
 import butterknife.BindView;

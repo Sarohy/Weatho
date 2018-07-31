@@ -1,23 +1,20 @@
 package com.sarohy.weatho.weatho;
 
 import android.app.IntentService;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Looper;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import com.sarohy.weatho.weatho.Model.DBModel.Location;
+import com.sarohy.weatho.weatho.Model.ProjectRepository;
 import com.sarohy.weatho.weatho.View.Activity.MainActivity;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -38,12 +35,13 @@ public class WeatherFetchService extends IntentService {
     NotificationManager notificationManager;
     PendingIntent pIntent;
     String cId= "2";
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onHandleIntent(Intent intent) {
        // Thread.currentThread().getId() == Looper.getMainLooper().getThread().getId()
         if (intent != null) {
             Log.d("Tested", "In service");
-            projectRepository = ProjectRepository.getInstance(getApplicationContext());
+            projectRepository = new ProjectRepository(getApplicationContext());
              String cName = "Notification";
             int importance = 0;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
@@ -72,6 +70,7 @@ public class WeatherFetchService extends IntentService {
             super.onPreExecute();
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         protected void onPostExecute(Void aVoid) {
             Log.d("Tested", "Post Exe");

@@ -40,10 +40,10 @@ class WeatherDetailFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun observers() {
-        viewModel.getForecast().observe(context as LifecycleOwner, Observer<ArrayList<WeatherHour>> { fetch ->
+        viewModel.getForecast().observe(context as LifecycleOwner, Observer<List<WeatherHour>> { fetch ->
             hourForecastRVAdapter.setArray(fetch)
             hourForecastRVAdapter.notifyDataSetChanged()
-            rootView.root_layout.isRefreshing = false;
+            rootView.root_layout.isRefreshing = false
         })
     }
 

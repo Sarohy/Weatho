@@ -1,5 +1,6 @@
 package com.sarohy.weatho.weatho.Model.DAO;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -19,7 +20,7 @@ public interface WeatherHoursDAO {
 
 
     @Query("SELECT * FROM WeatherHour where CityKey is  :cityKey")
-    List<WeatherHour> forecastByCity(String cityKey);
+    LiveData<List<WeatherHour>> forecastByCity(String cityKey);
 
     @Query("SELECT COUNT(*) from WeatherHour")
     int countCities();

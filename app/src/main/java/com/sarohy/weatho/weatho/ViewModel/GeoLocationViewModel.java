@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 
 import com.sarohy.weatho.weatho.Model.APIModel.City;
 import com.sarohy.weatho.weatho.Model.DBModel.Location;
-import com.sarohy.weatho.weatho.ProjectRepository;
+import com.sarohy.weatho.weatho.Model.ProjectRepository;
 
 import java.util.ArrayList;
 
@@ -17,7 +17,7 @@ public class GeoLocationViewModel extends AndroidViewModel implements ProjectRep
     MutableLiveData<Location> locationMutableLiveData = new MutableLiveData<>();
     public GeoLocationViewModel(@NonNull Application application) {
         super(application);
-        projectRepository = ProjectRepository.getInstance(application);
+        projectRepository = new ProjectRepository(application);
     }
     public void fetchLocation(String lat, String log){
         projectRepository.fetchLocationByGeo(lat+","+log, this);
