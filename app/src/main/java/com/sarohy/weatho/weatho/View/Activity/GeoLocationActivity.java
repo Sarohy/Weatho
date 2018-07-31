@@ -1,18 +1,22 @@
-package com.sarohy.weatho.weatho;
+package com.sarohy.weatho.weatho.View.Activity;
 
 import android.Manifest;
 import android.app.Activity;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,7 +41,11 @@ import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 
-import com.sarohy.weatho.weatho.View.Activity.MainActivity;
+import com.sarohy.weatho.weatho.ProjectRepository;
+import com.sarohy.weatho.weatho.R;
+import com.sarohy.weatho.weatho.Utils;
+import com.sarohy.weatho.weatho.ViewModel.CityViewModel;
+import com.sarohy.weatho.weatho.ViewModel.GeoLocationViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,12 +69,15 @@ public class GeoLocationActivity extends AppCompatActivity implements
     Location mLastLocation;
     LocationRequest mLocationRequest;
 
+    GeoLocationViewModel viewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location2);
         ButterKnife.bind(this);
+        viewModel = ViewModelProviders.of( this).get(GeoLocationViewModel.class);
 
         fabDone.setOnClickListener(this);
         fabRefresh.setOnClickListener(this);
@@ -245,10 +256,8 @@ public class GeoLocationActivity extends AppCompatActivity implements
     ProjectRepository projectRepository;
     private void updateUI() {
         locationDB = new com.sarohy.weatho.weatho.Model.DBModel.Location[1];
-        projectRepository = ProjectRepository.getInstance(this);
-        MutableLiveData<com.sarohy.weatho.weatho.Model.DBModel.Location> booleanMutableLiveData = new MutableLiveData<>();
-        projectRepository.fetchLocationByGeo(String.valueOf(mLastLocation.getLatitude())+","+String.valueOf(mLastLocation.getLongitude()),booleanMutableLiveData);
-        booleanMutableLiveData.observe(this, new Observer<com.sarohy.weatho.weatho.Model.DBModel.Location>() {
+        viewModel.fetchLocation(String.valueOf(mLastLocation.getLatitude()),String.valueOf(mLastLocation.getLongitude()));
+        viewModel.getLocation().observe(this, new Observer<com.sarohy.weatho.weatho.Model.DBModel.Location>() {
             @Override
             public void onChanged(@Nullable com.sarohy.weatho.weatho.Model.DBModel.Location location) {
                 locationDB[0] = location;
@@ -275,6 +284,11 @@ public class GeoLocationActivity extends AppCompatActivity implements
         switch (v.getId()){
             case R.id.fab_done:
                 projectRepository.addLocation(locationDB[0]);
+                SharedPreferences sharedPreferences = getSharedPreferences(Utils.City,
+                        Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString(Utils.CityKey,locationDB[0].getKey());
+                editor.apply();
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
                 break;
             case R.id.fab_refresh:

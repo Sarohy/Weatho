@@ -59,4 +59,9 @@ public class CityViewModel extends AndroidViewModel implements ProjectRepository
         this.Cities.addAll(cities);
         fetched.setValue(true);
     }
+
+    @Override
+    public void onLocationFetchedByGeo(Location location) {
+
+    }
 }

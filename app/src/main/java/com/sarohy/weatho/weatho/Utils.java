@@ -132,6 +132,8 @@ public class Utils {
             "https://www.developer.accuweather.com/sites/default/files/43-s.png",
             "https://www.developer.accuweather.com/sites/default/files/44-s.png"
     };
+    public static String City = "WeatherInfo";
+    public static String CityKey = "CityKey";
 
 
     public static Location cityAPItoDB(City c){

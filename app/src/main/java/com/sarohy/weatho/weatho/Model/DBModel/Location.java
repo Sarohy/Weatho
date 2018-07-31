@@ -27,7 +27,7 @@ public class Location implements Serializable {
     @ColumnInfo(name = "Country")
     private String Country;
 
-
+    private Boolean isHome;
 
     public String getKey ()
     {
@@ -39,6 +39,13 @@ public class Location implements Serializable {
         this.Key = Key;
     }
 
+    public Location(@NonNull String key, String administrativeArea, String localizedName, String country, Boolean isHome) {
+        Key = key;
+        AdministrativeArea = administrativeArea;
+        LocalizedName = localizedName;
+        Country = country;
+        this.isHome = isHome;
+    }
 
     @Override
     public String toString()
@@ -50,12 +57,6 @@ public class Location implements Serializable {
         return LocalizedName + " "+ AdministrativeArea+ " "+ Country;
     }
 
-    public Location(@NonNull String key, String administrativeArea, String localizedName, String country, boolean isHome) {
-        Key = key;
-        AdministrativeArea = administrativeArea;
-        LocalizedName = localizedName;
-        Country = country;
-    }
 
     public String getAdministrativeArea() {
         return AdministrativeArea;
@@ -83,5 +84,13 @@ public class Location implements Serializable {
 
 
     public Location() {
+    }
+
+    public Boolean getHome() {
+        return isHome;
+    }
+
+    public void setHome(Boolean home) {
+        isHome = home;
     }
 }

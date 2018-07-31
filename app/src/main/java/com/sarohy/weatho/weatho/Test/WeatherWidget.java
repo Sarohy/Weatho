@@ -3,6 +3,7 @@ package com.sarohy.weatho.weatho.Test;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.sarohy.weatho.weatho.R;
@@ -22,6 +23,7 @@ public class WeatherWidget extends AppWidgetProvider {
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
+        Log.d("Tested", String.valueOf(appWidgetId));
     }
 
     @Override

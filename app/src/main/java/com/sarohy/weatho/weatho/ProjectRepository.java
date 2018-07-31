@@ -214,14 +214,14 @@ public class ProjectRepository {
         });
     }
 
-    public void fetchLocationByGeo(final String location, final MutableLiveData<Location> locationMutableLiveData) {
+    public void fetchLocationByGeo(final String location, final CallBack callBack) {
 
         Call<City> call = apiService.getCity(API_KEY, location);
         call.enqueue(new Callback<City>() {
             @Override
             public void onResponse(@NonNull Call<City> call, @NonNull final Response<City> response) {
                 if (response.body() != null && !response.message().toLowerCase().equals("unauthorized")) {
-                    locationMutableLiveData.setValue(Utils.cityAPItoDB(response.body()));
+                    callBack.onLocationFetchedByGeo(Utils.cityAPItoDB(response.body()));
                 }
                 else {
                     Toast.makeText(context,toastMessage,Toast.LENGTH_LONG).show();
@@ -346,5 +346,6 @@ public class ProjectRepository {
     }
     public interface CallBack{
         void onCityFetchedByWord(ArrayList<City> cities);
+        void onLocationFetchedByGeo(Location location);
     }
 }

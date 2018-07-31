@@ -35,7 +35,7 @@
         <activity
             android:name=".View.Activity.SettingActivity"
             android:label="@string/title_activity_settings" />
-        <activity android:name=".GeoLocationActivity" />
+        <activity android:name=".View.Activity.GeoLocationActivity" />
         <activity
             android:name=".View.Activity.DetailWeatherActivity"
             android:label="@string/title_activity_detail_weather"

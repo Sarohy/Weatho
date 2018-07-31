@@ -18,7 +18,8 @@ import com.sarohy.weatho.weatho.Utils;
 
 import java.util.List;
 
-public class CityListRVAdapter extends RecyclerView.Adapter<CityListRVAdapter.MyViewHolder> {
+public class CityListRVAdapter extends RecyclerView.Adapter<CityListRVAdapter.MyViewHolder>
+{
 
     private List<Location> dataListAllItems;
     private Activity context;
@@ -28,16 +29,18 @@ public class CityListRVAdapter extends RecyclerView.Adapter<CityListRVAdapter.My
         dataListAllItems.addAll(fetch);
     }
 
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView  locationName, temperature;
-        private ImageButton homeBtn;
+        TextView  locationName, temperature;
+        ImageButton homeBtn;
         public RelativeLayout viewBackground, viewForeground;
-        public MyViewHolder(View view) {
+        MyViewHolder(View view) {
             super(view);
             locationName = (TextView) view.findViewById(R.id.tv_name);
             temperature = (TextView) view.findViewById(R.id.tv_current_date);
             viewBackground = view.findViewById(R.id.view_background);
             viewForeground = view.findViewById(R.id.view_foreground);
+            homeBtn = view.findViewById(R.id.ib_is_home);
         }
     }
 
@@ -47,8 +50,9 @@ public class CityListRVAdapter extends RecyclerView.Adapter<CityListRVAdapter.My
         this.dataListAllItems = citiesList;
     }
 
+    @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_cities_list, parent, false);
 
@@ -59,6 +63,21 @@ public class CityListRVAdapter extends RecyclerView.Adapter<CityListRVAdapter.My
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         final Location city = dataListAllItems.get(position);
         holder.locationName.setText(city.getDataToDisplay());
+        if (city.getHome()){
+            holder.homeBtn.setImageResource(R.drawable.ic_home_white_selected_24dp);
+        }
+        else{
+            holder.homeBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SharedPreferences sharedPreferences = context.getSharedPreferences(Utils.City,
+                            Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString(Utils.CityKey,city.getKey());
+                    editor.apply();
+                }
+            });
+        }
     }
 
     @Override
