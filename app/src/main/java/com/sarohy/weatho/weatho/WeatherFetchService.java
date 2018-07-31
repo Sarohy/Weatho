@@ -1,6 +1,7 @@
 package com.sarohy.weatho.weatho;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -15,6 +16,7 @@ import com.sarohy.weatho.weatho.Model.ProjectRepository;
 import com.sarohy.weatho.weatho.View.Activity.MainActivity;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -58,33 +60,20 @@ public class WeatherFetchService extends IntentService {
                 notificationManager.createNotificationChannel(notificationChannel);
             }
             projectRepository.loadLocationFromDB(locations);
-            projectRepository.loadDataASynchronous(locations,notificationManager,
-                    pIntent,cId,WeatherFetchService.this);
+            String str =projectRepository.loadDataASynchronous(locations);
 
+            Notification n  = new Notification.Builder(this)
+                    .setContentTitle("Weather Syncing Completed")
+                    .setContentText("Updated at " + (Utils.DateToTime(new Date())))
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setContentIntent(pIntent)
+                    .setChannelId(cId)
+                    .setStyle(new Notification.BigTextStyle().bigText(str))
+                    .setAutoCancel(true)
+                    .build();
+            assert notificationManager != null;
+            notificationManager.notify(6, n);
 
-        }
-    }
-    class LoadLocations extends AsyncTask<Void,Void,Void>{
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @RequiresApi(api = Build.VERSION_CODES.O)
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            Log.d("Tested", "Post Exe");
-            projectRepository.loadDataASynchronous(locations,notificationManager,
-                    pIntent,cId,WeatherFetchService.this);
-            super.onPostExecute(aVoid);
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            projectRepository.loadLocationFromDB(locations);
-
-
-            return null;
         }
     }
 }

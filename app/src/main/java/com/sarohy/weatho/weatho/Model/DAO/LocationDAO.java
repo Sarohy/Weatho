@@ -16,6 +16,9 @@ public interface LocationDAO {
     @Query("SELECT * FROM Location")
     LiveData<List<Location>> getAll();
 
+    @Query("SELECT * FROM Location")
+    List<Location> getAllList();
+
     @Query("SELECT COUNT(*) from Location")
     int countCities();
 

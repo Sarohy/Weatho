@@ -1,14 +1,9 @@
 package com.sarohy.weatho.weatho.Model;
 
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.arch.lifecycle.LiveData;
 import android.content.Context;
-import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -24,7 +19,6 @@ import com.sarohy.weatho.weatho.Model.DBModel.WeatherCurrent;
 import com.sarohy.weatho.weatho.Model.DBModel.Location;
 import com.sarohy.weatho.weatho.Model.DBModel.WeatherHour;
 import com.sarohy.weatho.weatho.Model.DBModel.WeatherDay;
-import com.sarohy.weatho.weatho.R;
 import com.sarohy.weatho.weatho.Utils;
 
 import org.jetbrains.annotations.NotNull;
@@ -32,7 +26,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -242,8 +235,7 @@ public class ProjectRepository {
         fetchHourlyData(key);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void loadDataASynchronous(ArrayList<Location> locations, NotificationManager notificationManager, PendingIntent pIntent, String cId, Context context) {
+    public String loadDataASynchronous(ArrayList<Location> locations) {
         ArrayList<String> arrayList = new ArrayList<>();
         for (int i = 0; i<locations.size(); i++) {
             final String cityKey = locations.get(i).getKey();
@@ -308,22 +300,13 @@ public class ProjectRepository {
         for (String s: arrayList){
             str.append(s).append("\n");
         }
-        Notification n  = new Notification.Builder(context)
-                .setContentTitle("Weather Syncing Completed")
-                .setContentText("Updated at " + (Utils.DateToTime(new Date())))
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentIntent(pIntent)
-                .setChannelId(cId)
-                .setStyle(new Notification.BigTextStyle().bigText(str.toString()))
-                .setAutoCancel(true)
-                .build();
-        assert notificationManager != null;
-        notificationManager.notify(6, n);
+        return str.toString();
+
 
     }
 
     public void loadLocationFromDB(ArrayList<Location> arrayList) {
-        arrayList.addAll(appDatabase.locationDAO().getAll().getValue());
+        arrayList.addAll(appDatabase.locationDAO().getAllList());
     }
     public interface CallBack{
         void onCityFetchedByWord(ArrayList<City> cities);
