@@ -7,8 +7,8 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.sarohy.weatho.weatho.API.APIClient;
 import com.sarohy.weatho.weatho.API.APIInterface;
+import com.sarohy.weatho.weatho.Dagger.components.ApplicationComponent;
 import com.sarohy.weatho.weatho.Database.AppDatabase;
 import com.sarohy.weatho.weatho.Model.APIModel.City;
 import com.sarohy.weatho.weatho.Model.APIModel.CurrentWeather;
@@ -20,6 +20,7 @@ import com.sarohy.weatho.weatho.Model.DBModel.Location;
 import com.sarohy.weatho.weatho.Model.DBModel.WeatherHour;
 import com.sarohy.weatho.weatho.Model.DBModel.WeatherDay;
 import com.sarohy.weatho.weatho.Utils;
+import com.sarohy.weatho.weatho.WeathoAppliccation;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -44,9 +45,9 @@ public class ProjectRepository {
     public ProjectRepository(Context context) {
         this.API_KEY = Utils.API_KEY4;
         this.context = context;
-        apiService = APIClient.getClient().create(APIInterface.class);
-        appDatabase = AppDatabase.getAppDatabase(context);
-
+        ApplicationComponent component = WeathoAppliccation.component;
+        apiService = component.getRetrofit();
+        appDatabase = component.getAppDatabase();
     }
 
     public LiveData<List<Location>> loadLocationFromDB() {

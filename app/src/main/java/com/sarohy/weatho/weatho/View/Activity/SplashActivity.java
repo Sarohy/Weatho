@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.sarohy.weatho.weatho.R;
 import com.sarohy.weatho.weatho.SharedPreferencesClass;
 import com.sarohy.weatho.weatho.Utils;
+import com.sarohy.weatho.weatho.WeathoAppliccation;
 
 import butterknife.BindView;
 
@@ -25,8 +26,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final Activity activity = this;
-        SharedPreferencesClass sharedPreferencesClass = new SharedPreferencesClass(this);
-        String value = sharedPreferencesClass.getCityKey();
+        String value = WeathoAppliccation.component.getSharedPrefs().getCityKey();
         Bundle bundle=ActivityOptions.makeSceneTransitionAnimation(activity).toBundle();
         if (value.equals("-1"))
             startActivity(new Intent(this, GeoLocationActivity.class),bundle);

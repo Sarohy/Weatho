@@ -1,11 +1,8 @@
 package com.sarohy.weatho.weatho.View.Activity
 
-import android.media.RingtoneManager
-import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.*
-import android.text.TextUtils
 import com.sarohy.weatho.weatho.R
 
 class SettingActivity : AppCompatActivity() {

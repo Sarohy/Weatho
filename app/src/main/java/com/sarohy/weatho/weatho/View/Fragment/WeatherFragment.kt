@@ -38,9 +38,8 @@ import kotlin.collections.ArrayList
 class WeatherFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener{
 
 
-
-    public lateinit var city:Location
-    public lateinit var weatherCurrent: WeatherCurrent;
+    private lateinit var city:Location
+    private lateinit var weatherCurrent: WeatherCurrent;
     lateinit var daysForecastRVAdapter:DaysForecastRVAdapter;
     private lateinit var viewModel:WeatherViewModel
     lateinit var rootView:View
@@ -119,10 +118,11 @@ class WeatherFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener{
     }
 
 
+    @SuppressLint("SetJavaScriptEnabled")
     private fun updateUI(rootView: View) {
         val temperatureUnit = Integer.parseInt(prefs.getString("temperature", "1")!!)
         val webSetting = rootView.wv_weather.getSettings()
-        webSetting.setJavaScriptEnabled(true)
+        webSetting.javaScriptEnabled = true
         rootView.wv_weather.loadUrl("file:///android_asset/index.html")
         val s = Utils.showCurrentWeather(temperatureUnit, weatherCurrent.temperature,weatherCurrent.temperatureUnit)
         val str = "javascript:myJavaScriptFunc('"+s+"',"+Utils.mapOfWeather(weatherCurrent.weatherIcon)+",'"+weatherCurrent.weatherText+"')"
@@ -132,7 +132,7 @@ class WeatherFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener{
                 rootView.wv_weather.loadUrl(str)
             }
         }
-        rootView.main_layout.isRefreshing = false;
+        rootView.main_layout.isRefreshing = false
     }
 
 
@@ -144,7 +144,7 @@ class WeatherFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener{
         }
     }
     override fun onRefresh() {
-        viewModel.updateWeatherInfo();
+        viewModel.updateWeatherInfo()
     }
 }
 

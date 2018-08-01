@@ -23,7 +23,7 @@ import com.sarohy.weatho.weatho.*
 import java.util.*
 import android.os.Build
 import android.support.annotation.RequiresApi
-import android.support.v4.view.PagerAdapter
+import com.sarohy.weatho.weatho.Dagger.modules.ContextModule
 import kotlin.collections.ArrayList
 
 

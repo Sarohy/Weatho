@@ -2,25 +2,22 @@ package com.sarohy.weatho.weatho.View.Adapter
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.preference.PreferenceManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.bumptech.glide.Glide
 import com.sarohy.weatho.weatho.Model.DBModel.WeatherDay
 import com.sarohy.weatho.weatho.R
 import com.sarohy.weatho.weatho.Utils
 import kotlinx.android.synthetic.main.item_day_forecast_list.view.*
 import com.bumptech.glide.request.RequestOptions
-import com.sarohy.weatho.weatho.SharedPreferencesClass
+import com.sarohy.weatho.weatho.WeathoAppliccation
 
 
 class DaysForecastRVAdapter(citiesList: ArrayList<WeatherDay>, context: Activity) : RecyclerView.Adapter<DaysForecastRVAdapter.MyViewHolder>() {
-    private lateinit var dataListAllItems: ArrayList<WeatherDay>
-    private lateinit var context: Activity
+    private var dataListAllItems: ArrayList<WeatherDay> = citiesList
 
     inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var temperature: TextView
@@ -40,11 +37,6 @@ class DaysForecastRVAdapter(citiesList: ArrayList<WeatherDay>, context: Activity
     }
 
 
-    init {
-        this.context = context
-        this.dataListAllItems = citiesList
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_day_forecast_list, parent, false)
@@ -55,8 +47,7 @@ class DaysForecastRVAdapter(citiesList: ArrayList<WeatherDay>, context: Activity
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val weatherDay = dataListAllItems[position]
-        val prefs = SharedPreferencesClass(context)
-        val temperatureUnit = Integer.parseInt(prefs.temperature!!)
+        val temperatureUnit = Integer.parseInt(WeathoAppliccation.component.sharedPrefs.temperature!!)
         holder.temperature.text = Utils.showHiLowWeather(temperatureUnit,weatherDay.temperatureMax, weatherDay.temperatureMin,weatherDay.temperatureUnit)
         holder.date.text =  Utils.DateToString(weatherDay.date)
         holder.nightPhrase.text = weatherDay.iconPhraseNight
@@ -65,9 +56,9 @@ class DaysForecastRVAdapter(citiesList: ArrayList<WeatherDay>, context: Activity
         requestOptions1.placeholder(Utils.getWeatherIcon(weatherDay.iconNight.toString()))
         val requestOptions2 = RequestOptions()
         requestOptions2.placeholder(Utils.getWeatherIcon(weatherDay.iconDay.toString()))
-        Glide.with(context).load(Utils.getWeatherIconLink(weatherDay.iconNight.toString()))
+        WeathoAppliccation.component.glide.load(Utils.getWeatherIconLink(weatherDay.iconNight.toString()))
                 .apply(requestOptions1).into(holder.nightImage)
-        Glide.with(context).load(Utils.getWeatherIconLink(weatherDay.iconDay.toString()))
+        WeathoAppliccation.component.glide.load(Utils.getWeatherIconLink(weatherDay.iconDay.toString()))
                .apply(requestOptions2).into(holder.dayImage)
     }
 

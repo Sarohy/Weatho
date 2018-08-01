@@ -52,7 +52,7 @@ class WeatherDetailFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private fun init() {
         val factory = DetailWeatherViewModelFactory(activity?.application!!, city.key )
         viewModel = ViewModelProviders.of(this, factory).get(DetailWeatherViewModel::class.java)
-        hourForecastRVAdapter = HourForecastRVAdapter(ArrayList<WeatherHour>(), activity!!);
+        hourForecastRVAdapter = HourForecastRVAdapter(ArrayList())
     }
 
     private fun setup() {
@@ -77,8 +77,8 @@ class WeatherDetailFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private fun animation() {
         val metrics = DisplayMetrics()
-        activity!!.getWindowManager().getDefaultDisplay().getMetrics(metrics)
-        rootView.rv_hours_forecast.setTranslationY(metrics.heightPixels.toFloat())
+        activity!!.windowManager.getDefaultDisplay().getMetrics(metrics)
+        rootView.rv_hours_forecast.translationY = metrics.heightPixels.toFloat()
         val interpolator = Class.forName("android.view.animation.AnticipateOvershootInterpolator").newInstance() as Interpolator
         rootView.rv_hours_forecast.animate().setInterpolator(interpolator)
                 .setDuration(1500)

@@ -14,6 +14,7 @@ import com.sarohy.weatho.weatho.Model.DBModel.Location;
 import com.sarohy.weatho.weatho.R;
 import com.sarohy.weatho.weatho.SharedPreferencesClass;
 import com.sarohy.weatho.weatho.Utils;
+import com.sarohy.weatho.weatho.WeathoAppliccation;
 
 import java.util.List;
 
@@ -22,8 +23,6 @@ public class CityListRVAdapter extends RecyclerView.Adapter<CityListRVAdapter.My
 
     private List<Location> dataListAllItems;
     private Activity context;
-    private SharedPreferencesClass sharedPreferencesClass;
-
 
     public void updateList(List<Location> fetch) {
         dataListAllItems.clear();
@@ -48,7 +47,6 @@ public class CityListRVAdapter extends RecyclerView.Adapter<CityListRVAdapter.My
     public CityListRVAdapter(List<Location> citiesList,Activity context) {
         this.context = context;
         this.dataListAllItems = citiesList;
-        sharedPreferencesClass = new SharedPreferencesClass(context);
     }
 
     @NonNull
@@ -63,7 +61,7 @@ public class CityListRVAdapter extends RecyclerView.Adapter<CityListRVAdapter.My
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         final Location city = dataListAllItems.get(position);
         holder.locationName.setText(city.getDataToDisplay());
-        String homeKey = sharedPreferencesClass.getCityKey();
+        String homeKey = WeathoAppliccation.component.getSharedPrefs().getCityKey();
         if (city.getKey().equals(homeKey)){
             holder.homeBtn.setImageResource(R.drawable.ic_home_white_selected_24dp);
         }
@@ -71,7 +69,7 @@ public class CityListRVAdapter extends RecyclerView.Adapter<CityListRVAdapter.My
             holder.homeBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                sharedPreferencesClass.setCityKey(city.getKey());
+                WeathoAppliccation.component.getSharedPrefs().setCityKey(city.getKey());
                 context.finish();
                 }
             });

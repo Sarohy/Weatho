@@ -44,6 +44,7 @@ import com.sarohy.weatho.weatho.R;
 import com.sarohy.weatho.weatho.SharedPreferencesClass;
 import com.sarohy.weatho.weatho.Utils;
 import com.sarohy.weatho.weatho.ViewModel.GeoLocationViewModel;
+import com.sarohy.weatho.weatho.WeathoAppliccation;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -266,8 +267,7 @@ public class GeoLocationActivity extends AppCompatActivity implements
         switch (v.getId()){
             case R.id.fab_done:
                 viewModel.addLocation(locationDB[0]);
-                SharedPreferencesClass sharedPreferencesClass = new SharedPreferencesClass(this);
-                sharedPreferencesClass.setCityKey(locationDB[0].getKey());
+                WeathoAppliccation.component.getSharedPrefs().setCityKey(locationDB[0].getKey());
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
                 finish();
                 break;
