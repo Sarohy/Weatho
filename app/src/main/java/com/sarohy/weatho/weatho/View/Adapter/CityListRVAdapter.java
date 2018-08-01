@@ -12,17 +12,15 @@ import android.widget.TextView;
 
 import com.sarohy.weatho.weatho.Model.DBModel.Location;
 import com.sarohy.weatho.weatho.R;
-import com.sarohy.weatho.weatho.SharedPreferencesClass;
-import com.sarohy.weatho.weatho.Utils;
-import com.sarohy.weatho.weatho.WeathoAppliccation;
+import com.sarohy.weatho.weatho.WeathoApplication;
 
 import java.util.List;
 
 public class CityListRVAdapter extends RecyclerView.Adapter<CityListRVAdapter.MyViewHolder>
 {
 
-    private List<Location> dataListAllItems;
-    private Activity context;
+    private final List<Location> dataListAllItems;
+    private final Activity context;
 
     public void updateList(List<Location> fetch) {
         dataListAllItems.clear();
@@ -30,13 +28,15 @@ public class CityListRVAdapter extends RecyclerView.Adapter<CityListRVAdapter.My
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView  locationName, temperature;
-        ImageButton homeBtn;
-        public RelativeLayout viewBackground, viewForeground;
+        final TextView  locationName;
+        final TextView temperature;
+        final ImageButton homeBtn;
+        final RelativeLayout viewBackground;
+        public final RelativeLayout viewForeground;
         MyViewHolder(View view) {
             super(view);
-            locationName = (TextView) view.findViewById(R.id.tv_name);
-            temperature = (TextView) view.findViewById(R.id.tv_current_date);
+            locationName = view.findViewById(R.id.tv_name);
+            temperature = view.findViewById(R.id.tv_current_date);
             viewBackground = view.findViewById(R.id.view_background);
             viewForeground = view.findViewById(R.id.view_foreground);
             homeBtn = view.findViewById(R.id.ib_is_home);
@@ -61,7 +61,7 @@ public class CityListRVAdapter extends RecyclerView.Adapter<CityListRVAdapter.My
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         final Location city = dataListAllItems.get(position);
         holder.locationName.setText(city.getDataToDisplay());
-        String homeKey = WeathoAppliccation.component.getSharedPrefs().getCityKey();
+        String homeKey = WeathoApplication.component.getSharedPrefs().getCityKey();
         if (city.getKey().equals(homeKey)){
             holder.homeBtn.setImageResource(R.drawable.ic_home_white_selected_24dp);
         }
@@ -69,7 +69,7 @@ public class CityListRVAdapter extends RecyclerView.Adapter<CityListRVAdapter.My
             holder.homeBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                WeathoAppliccation.component.getSharedPrefs().setCityKey(city.getKey());
+                WeathoApplication.component.getSharedPrefs().setCityKey(city.getKey());
                 context.finish();
                 }
             });

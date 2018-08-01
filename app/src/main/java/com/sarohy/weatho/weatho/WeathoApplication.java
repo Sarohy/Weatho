@@ -6,7 +6,7 @@ import com.sarohy.weatho.weatho.Dagger.components.DaggerApplicationComponent;
 import com.sarohy.weatho.weatho.Dagger.components.ApplicationComponent;
 import com.sarohy.weatho.weatho.Dagger.modules.ContextModule;
 
-public class WeathoAppliccation extends Application {
+public class WeathoApplication extends Application {
     public static ApplicationComponent component;
     @Override
     public void onCreate() {

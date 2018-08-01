@@ -2,8 +2,6 @@ package com.sarohy.weatho.weatho.Model.APIModel;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Date;
-
 public class CurrentWeather {
     @SerializedName("WeatherIcon")
     private String WeatherIcon;

@@ -2,13 +2,8 @@ package com.sarohy.weatho.weatho.Model.DBModel;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
-
-import com.google.gson.annotations.SerializedName;
-import com.sarohy.weatho.weatho.Model.APIModel.AdministrativeArea;
-import com.sarohy.weatho.weatho.Model.APIModel.Country;
 
 import java.io.Serializable;
 
@@ -28,12 +23,13 @@ public class Location implements Serializable {
     private String Country;
 
 
+    @NonNull
     public String getKey ()
     {
         return Key;
     }
 
-    public void setKey (String Key)
+    public void setKey (@NonNull String Key)
     {
         this.Key = Key;
     }

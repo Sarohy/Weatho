@@ -13,6 +13,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
+@SuppressWarnings("SpellCheckingInspection")
 public interface APIInterface {
     @GET("locations/v1/cities/autocomplete")
     Call<ArrayList<City>> getCities(@Query("apikey") String apiKey, @Query("q") String value);

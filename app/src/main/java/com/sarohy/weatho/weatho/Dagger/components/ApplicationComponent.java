@@ -2,7 +2,6 @@ package com.sarohy.weatho.weatho.Dagger.components;
 
 
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.sarohy.weatho.weatho.API.APIInterface;
 import com.sarohy.weatho.weatho.Dagger.modules.ContextModule;
@@ -10,8 +9,6 @@ import com.sarohy.weatho.weatho.Database.AppDatabase;
 import com.sarohy.weatho.weatho.Dagger.annotations.ApplicationScope;
 import com.sarohy.weatho.weatho.Dagger.modules.ServiceModule;
 import com.sarohy.weatho.weatho.SharedPreferencesClass;
-
-import javax.inject.Inject;
 
 import dagger.Component;
 

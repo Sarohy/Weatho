@@ -14,17 +14,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CityViewModel extends AndroidViewModel implements ProjectRepository.CallBack {
-    private ArrayList<City>Cities = new ArrayList<>();
-    private MutableLiveData<Boolean> fetched = new MutableLiveData<>();
-    private final String TAG = "HelloWorld";
-    private ProjectRepository projectRepository;
-    private LiveData<List<Location>> citiesAdded;
+    private final ArrayList<City>Cities = new ArrayList<>();
+    private final MutableLiveData<Boolean> fetched = new MutableLiveData<>();
+    private final ProjectRepository projectRepository;
 
     public CityViewModel(@NonNull Application application) {
         super(application);
         projectRepository = new ProjectRepository(application);
         fetched.setValue(false);
-        citiesAdded = projectRepository.loadLocationFromDB();
     }
     public void getData(String str){
         fetched.setValue(false);
@@ -42,15 +39,6 @@ public class CityViewModel extends AndroidViewModel implements ProjectRepository
         return fetched;
     }
 
-    public boolean checkIsEntered(City c) {
-//        for (int i=0;i<citiesAdded.getValue().size();i++) {
-//            Location location = citiesAdded.getValue().get(i);
-//            if (c.getKey().equals(location.getKey())) {
-//                return true;
-//            }
-//        }
-        return false;
-    }
 
     @Override
     public void onCityFetchedByWord(ArrayList<City> cities) {

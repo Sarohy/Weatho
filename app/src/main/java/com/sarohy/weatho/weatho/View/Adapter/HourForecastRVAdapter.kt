@@ -11,22 +11,19 @@ import com.bumptech.glide.request.RequestOptions
 import com.sarohy.weatho.weatho.Model.DBModel.WeatherHour
 import com.sarohy.weatho.weatho.R
 import com.sarohy.weatho.weatho.Utils
-import com.sarohy.weatho.weatho.WeathoAppliccation
+import com.sarohy.weatho.weatho.WeathoApplication
 import kotlinx.android.synthetic.main.item_hourly_forecast_list.view.*
 
 class HourForecastRVAdapter(citiesList: ArrayList<WeatherHour>) : RecyclerView.Adapter<HourForecastRVAdapter.MyViewHolder>() {
     private var dataListAllItems: ArrayList<WeatherHour> = citiesList
 
     inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var temperature: TextView
-        var time: TextView
-        var phrase: TextView
-        var tempImange:ImageView
+        var temperature: TextView = view.tv_forecast_temperature
+        var time: TextView = view.tv_forecast_time
+        var phrase: TextView = view.tv_phrase
+        var tempImage:ImageView
         init {
-            time = view.tv_forecast_time
-            temperature = view.tv_forecast_temperature
-            phrase = view.tv_phrase
-            tempImange = view.iv_weather_icon
+            tempImage = view.iv_weather_icon
         }
     }
 
@@ -41,22 +38,18 @@ class HourForecastRVAdapter(citiesList: ArrayList<WeatherHour>) : RecyclerView.A
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val weatherDay = dataListAllItems[position]
-        val temperatureUnit = Integer.parseInt(WeathoAppliccation.component.sharedPrefs.temperature!!)
+        val temperatureUnit = Integer.parseInt(WeathoApplication.component.sharedPrefs.temperature!!)
         holder.temperature.text = Utils.showCurrentWeather(temperatureUnit,weatherDay.temperature,weatherDay.temperatureUnit)
         holder.phrase.text = weatherDay.weatherText
         holder.time.text = Utils.DateToTime(weatherDay.localObservationDateTime)
         val requestOptions = RequestOptions()
         requestOptions.placeholder(Utils.getWeatherIcon(weatherDay.weatherIcon.toString()))
-        WeathoAppliccation.component.glide.load(Utils.getWeatherIconLink(weatherDay.weatherIcon.toString()))
-                .apply(requestOptions).into(holder.tempImange)
+        WeathoApplication.component.glide.load(Utils.getWeatherIconLink(weatherDay.weatherIcon.toString()))
+                .apply(requestOptions).into(holder.tempImage)
     }
 
     override fun getItemCount(): Int {
         return dataListAllItems.size
-    }
-
-    fun getItem(i: Int): WeatherHour {
-        return dataListAllItems.get(i)
     }
 
     fun setArray(fetches: List<WeatherHour>?) {

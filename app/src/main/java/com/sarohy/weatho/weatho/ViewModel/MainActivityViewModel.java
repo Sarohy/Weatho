@@ -12,12 +12,10 @@ import java.util.List;
 
 public class MainActivityViewModel extends AndroidViewModel {
     private LiveData<List<Location>> cities;
-    public ProjectRepository projectRepository;
-    private Application application;
+    private final ProjectRepository projectRepository;
 
     public MainActivityViewModel(@NonNull Application application) {
         super(application);
-        this.application = application;
         projectRepository = new ProjectRepository(application);
         loadDataFromDB();
     }
@@ -30,7 +28,4 @@ public class MainActivityViewModel extends AndroidViewModel {
         return cities;
     }
 
-    public void load() {
-        loadDataFromDB();
-    }
 }

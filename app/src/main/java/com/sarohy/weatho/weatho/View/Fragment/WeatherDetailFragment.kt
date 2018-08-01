@@ -25,10 +25,10 @@ import kotlin.collections.ArrayList
 
 class WeatherDetailFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
-    public lateinit var city: Location
-    lateinit var hourForecastRVAdapter: HourForecastRVAdapter;
+    lateinit var city: Location
+    private lateinit var hourForecastRVAdapter: HourForecastRVAdapter
     private lateinit var viewModel:DetailWeatherViewModel
-    lateinit var rootView:View
+    private lateinit var rootView:View
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -58,10 +58,10 @@ class WeatherDetailFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private fun setup() {
         rootView.rv_hours_forecast.setHasFixedSize(true)
         rootView.root_layout.setOnRefreshListener(this)
-        val mLayoutManager = LinearLayoutManager(activity!!.getApplicationContext(), LinearLayoutManager.VERTICAL, false)
-        rootView.rv_hours_forecast.setItemAnimator(DefaultItemAnimator())
-        rootView.rv_hours_forecast.setLayoutManager(mLayoutManager)
-        rootView.rv_hours_forecast.setAdapter(hourForecastRVAdapter)
+        val mLayoutManager = LinearLayoutManager(activity!!.applicationContext, LinearLayoutManager.VERTICAL, false)
+        rootView.rv_hours_forecast.itemAnimator = DefaultItemAnimator()
+        rootView.rv_hours_forecast.layoutManager = mLayoutManager
+        rootView.rv_hours_forecast.adapter = hourForecastRVAdapter
     }
 
     companion object {
@@ -77,7 +77,7 @@ class WeatherDetailFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private fun animation() {
         val metrics = DisplayMetrics()
-        activity!!.windowManager.getDefaultDisplay().getMetrics(metrics)
+        activity!!.windowManager.defaultDisplay.getMetrics(metrics)
         rootView.rv_hours_forecast.translationY = metrics.heightPixels.toFloat()
         val interpolator = Class.forName("android.view.animation.AnticipateOvershootInterpolator").newInstance() as Interpolator
         rootView.rv_hours_forecast.animate().setInterpolator(interpolator)

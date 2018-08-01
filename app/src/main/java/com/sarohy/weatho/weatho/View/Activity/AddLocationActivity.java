@@ -6,10 +6,10 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,18 +21,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.sarohy.weatho.weatho.Model.APIModel.City;
 import com.sarohy.weatho.weatho.R;
-import com.sarohy.weatho.weatho.Utils;
-import com.sarohy.weatho.weatho.View.Adapter.CityRVAdapter;
 import com.sarohy.weatho.weatho.RecyclerTouchListener;
+import com.sarohy.weatho.weatho.View.Adapter.CityRVAdapter;
 import com.sarohy.weatho.weatho.ViewModel.CityViewModel;
-
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,7 +42,7 @@ public class AddLocationActivity extends AppCompatActivity implements View.OnCli
     @BindView(R.id.rv_cities)
     RecyclerView rvCities;
 
-    CityViewModel viewModel;
+    private CityViewModel viewModel;
     private Context context;
     private CityRVAdapter cityListAdapter;
     private static final String LOG_TAG = AddLocationActivity.class.getSimpleName()+"Test: In AddLocationActivity";
@@ -64,7 +58,7 @@ public class AddLocationActivity extends AppCompatActivity implements View.OnCli
     private void setup() {
         ibtnBack.setOnClickListener(this);
         etCitySearch.addTextChangedListener(this);
-        cityListAdapter = new CityRVAdapter((List<City>) viewModel.getCities());
+        cityListAdapter = new CityRVAdapter(viewModel.getCities());
         rvCities.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rvCities.setLayoutManager(mLayoutManager);
@@ -76,15 +70,10 @@ public class AddLocationActivity extends AppCompatActivity implements View.OnCli
             public void onClick(View view, int position) {
 
                 City city = cityListAdapter.getList().get(position);
-                if (!viewModel.checkIsEntered(city)) {
-                    Intent intent = new Intent();
-                    intent.putExtra("city", city);
-                    setResult(RESULT_OK, intent);
-                    finish();
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "Already Added!!", Toast.LENGTH_LONG).show();
-                }
+                Intent intent = new Intent();
+                intent.putExtra("city", city);
+                setResult(RESULT_OK, intent);
+                finish();
             }
 
             @Override
@@ -103,7 +92,7 @@ public class AddLocationActivity extends AppCompatActivity implements View.OnCli
         });
     }
 
-    void init(){
+    private void init(){
         context = this;
         pbSearch.setVisibility(View.GONE);
         viewModel = ViewModelProviders.of((FragmentActivity) context).get(CityViewModel.class);

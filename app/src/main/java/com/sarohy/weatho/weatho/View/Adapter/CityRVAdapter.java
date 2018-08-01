@@ -1,5 +1,6 @@
 package com.sarohy.weatho.weatho.View.Adapter;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,16 +17,16 @@ import java.util.List;
 
 public class CityRVAdapter extends RecyclerView.Adapter<CityRVAdapter.MyViewHolder> implements Filterable{
 
-    private List<City> dataListAllItems;
+    private final List<City> dataListAllItems;
     private List<City> dataListFilter;
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView  name;
+        final TextView  name;
 
-        public MyViewHolder(View view) {
+        MyViewHolder(View view) {
             super(view);
-            name = (TextView) view.findViewById(R.id.tv_text);
+            name = view.findViewById(R.id.tv_text);
         }
     }
 
@@ -35,8 +36,9 @@ public class CityRVAdapter extends RecyclerView.Adapter<CityRVAdapter.MyViewHold
         this.dataListFilter = (citiesList);
     }
 
+    @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_city_picker_list, parent, false);
 
@@ -44,7 +46,7 @@ public class CityRVAdapter extends RecyclerView.Adapter<CityRVAdapter.MyViewHold
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         City city = dataListFilter.get(position);
         holder.name.setText(city.getDataToDisplay());
     }
@@ -61,7 +63,6 @@ public class CityRVAdapter extends RecyclerView.Adapter<CityRVAdapter.MyViewHold
             protected FilterResults performFiltering(CharSequence charSequence) {
                 String charString = charSequence.toString();
                 if (charString.isEmpty()) {
-                    dataListFilter = dataListFilter;
                 } else {
                     List<City> filteredList = new ArrayList<>();
                     for (City row : dataListAllItems) {

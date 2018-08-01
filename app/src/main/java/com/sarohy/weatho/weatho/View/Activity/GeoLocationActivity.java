@@ -5,20 +5,18 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -31,20 +29,15 @@ import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
-
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
-import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
-
 import com.sarohy.weatho.weatho.R;
-import com.sarohy.weatho.weatho.SharedPreferencesClass;
-import com.sarohy.weatho.weatho.Utils;
 import com.sarohy.weatho.weatho.ViewModel.GeoLocationViewModel;
-import com.sarohy.weatho.weatho.WeathoAppliccation;
+import com.sarohy.weatho.weatho.WeathoApplication;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,11 +57,11 @@ public class GeoLocationActivity extends AppCompatActivity implements
     FloatingActionButton fabDone;
     @BindView(R.id.fab_refresh)
     FloatingActionButton fabRefresh;
-    GoogleApiClient mGoogleApiClient;
-    Location mLastLocation;
-    LocationRequest mLocationRequest;
+    private GoogleApiClient mGoogleApiClient;
+    private Location mLastLocation;
+    private LocationRequest mLocationRequest;
 
-    GeoLocationViewModel viewModel;
+    private GeoLocationViewModel viewModel;
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -82,10 +75,7 @@ public class GeoLocationActivity extends AppCompatActivity implements
                             .addApi(LocationServices.API)
                             .build();
 
-                    if (mGoogleApiClient != null) {
-                        mGoogleApiClient.connect();
-                    } else
-                        Toast.makeText(this, "Not Connected!", Toast.LENGTH_SHORT).show();
+                    mGoogleApiClient.connect();
                 }
                 break;
         }
@@ -121,10 +111,7 @@ public class GeoLocationActivity extends AppCompatActivity implements
                     .addApi(LocationServices.API)
                     .build();
 
-            if (mGoogleApiClient != null) {
-                mGoogleApiClient.connect();
-            } else
-                Toast.makeText(this, "Not Connected!", Toast.LENGTH_SHORT).show();
+            mGoogleApiClient.connect();
         }
 
     }
@@ -160,7 +147,7 @@ public class GeoLocationActivity extends AppCompatActivity implements
         }
     }
 
-    public void settingRequest() {
+    private void settingRequest() {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(10000);    // 10 seconds, in milliseconds
         mLocationRequest.setFastestInterval(1000);   // 1 second, in milliseconds
@@ -178,7 +165,6 @@ public class GeoLocationActivity extends AppCompatActivity implements
             @Override
             public void onResult(@NonNull LocationSettingsResult result) {
                 final Status status = result.getStatus();
-                final LocationSettingsStates state = result.getLocationSettingsStates();
                 switch (status.getStatusCode()) {
                     case LocationSettingsStatusCodes.SUCCESS:
                         getLocation();
@@ -219,9 +205,8 @@ public class GeoLocationActivity extends AppCompatActivity implements
         }
     }
 
-    public void getLocation() {
+    private void getLocation() {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
         } else {
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                     mGoogleApiClient);
@@ -236,7 +221,7 @@ public class GeoLocationActivity extends AppCompatActivity implements
             }
         }
     }
-    com.sarohy.weatho.weatho.Model.DBModel.Location[] locationDB;
+    private com.sarohy.weatho.weatho.Model.DBModel.Location[] locationDB;
     @SuppressLint("SetTextI18n")
     private void updateUI() {
         locationDB = new com.sarohy.weatho.weatho.Model.DBModel.Location[1];
@@ -267,7 +252,7 @@ public class GeoLocationActivity extends AppCompatActivity implements
         switch (v.getId()){
             case R.id.fab_done:
                 viewModel.addLocation(locationDB[0]);
-                WeathoAppliccation.component.getSharedPrefs().setCityKey(locationDB[0].getKey());
+                WeathoApplication.component.getSharedPrefs().setCityKey(locationDB[0].getKey());
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
                 finish();
                 break;

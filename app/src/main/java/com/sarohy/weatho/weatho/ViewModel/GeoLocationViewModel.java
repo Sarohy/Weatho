@@ -13,8 +13,8 @@ import com.sarohy.weatho.weatho.Model.ProjectRepository;
 import java.util.ArrayList;
 
 public class GeoLocationViewModel extends AndroidViewModel implements ProjectRepository.CallBack {
-    ProjectRepository projectRepository;
-    MutableLiveData<Location> locationMutableLiveData = new MutableLiveData<>();
+    private final ProjectRepository projectRepository;
+    private final MutableLiveData<Location> locationMutableLiveData = new MutableLiveData<>();
     public GeoLocationViewModel(@NonNull Application application) {
         super(application);
         projectRepository = new ProjectRepository(application);

@@ -7,12 +7,11 @@ import com.sarohy.weatho.weatho.Model.DBModel.WeatherHour
 import com.sarohy.weatho.weatho.Model.ProjectRepository
 
 class DetailWeatherViewModel(application: Application, key:String) : AndroidViewModel(application) {
-    lateinit var weatherDay: LiveData<List<WeatherHour>>
-    lateinit var projectRepository: ProjectRepository;
-    lateinit var cityKey:String
+    private lateinit var weatherDay: LiveData<List<WeatherHour>>
+    private var projectRepository: ProjectRepository = ProjectRepository(application)
+    var cityKey:String = key
+
     init {
-        cityKey = key
-        projectRepository = ProjectRepository(application)
         loadData()
     }
 

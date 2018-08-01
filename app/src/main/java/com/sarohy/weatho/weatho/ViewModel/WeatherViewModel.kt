@@ -9,12 +9,11 @@ import com.sarohy.weatho.weatho.Model.ProjectRepository
 
 class WeatherViewModel(application: Application,key:String) : AndroidViewModel(application) {
     private lateinit var weatherDay:LiveData<List<WeatherDay>>
-    lateinit var projectRepository: ProjectRepository;
+    private var projectRepository: ProjectRepository = ProjectRepository(application)
     private lateinit var currentWeather:LiveData<WeatherCurrent>
-    lateinit var cityKey:String
+    var cityKey:String = key
+
     init {
-        cityKey = key
-        projectRepository = ProjectRepository(application)
         loadData()
     }
 
@@ -23,11 +22,11 @@ class WeatherViewModel(application: Application,key:String) : AndroidViewModel(a
         currentWeather = projectRepository.loadCurrentWeatherFromDB(cityKey)
     }
 
-    public fun getWeatherDay(): LiveData<List<WeatherDay>>{
+    fun getWeatherDay(): LiveData<List<WeatherDay>>{
         return weatherDay
     }
     fun getCurrentWeather():LiveData<WeatherCurrent>{
-        return currentWeather;
+        return currentWeather
     }
 
 

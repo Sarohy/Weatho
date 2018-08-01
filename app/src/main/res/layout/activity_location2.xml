@@ -73,5 +73,6 @@
         android:elevation="8dp"
         android:src="@drawable/ic_done_white_24dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        tools:ignore="RelativeOverlap" />
 </RelativeLayout>

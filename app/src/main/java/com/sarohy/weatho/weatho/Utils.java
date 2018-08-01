@@ -1,7 +1,6 @@
 package com.sarohy.weatho.weatho;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 
 import com.sarohy.weatho.weatho.Model.APIModel.City;
 import com.sarohy.weatho.weatho.Model.APIModel.CurrentWeather;
@@ -12,10 +11,10 @@ import com.sarohy.weatho.weatho.Model.APIModel.Maximum;
 import com.sarohy.weatho.weatho.Model.APIModel.Minimum;
 import com.sarohy.weatho.weatho.Model.APIModel.Night;
 import com.sarohy.weatho.weatho.Model.APIModel.Temperature;
-import com.sarohy.weatho.weatho.Model.DBModel.WeatherCurrent;
 import com.sarohy.weatho.weatho.Model.DBModel.Location;
-import com.sarohy.weatho.weatho.Model.DBModel.WeatherHour;
+import com.sarohy.weatho.weatho.Model.DBModel.WeatherCurrent;
 import com.sarohy.weatho.weatho.Model.DBModel.WeatherDay;
+import com.sarohy.weatho.weatho.Model.DBModel.WeatherHour;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -23,19 +22,18 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 public class Utils {
     public static final String BASE_URL = "http://dataservice.accuweather.com/";
-    public static final String API_KEY1 = "0B2ulCEWdRYvelMurc54xcaAPpbyarMw";
-    public static final String API_KEY2 = "ADaTpwFUasrct7lU8w15pt8ye04bO19k";
-    public static final String API_KEY3 = "9rCSj6Cgvbx4T6EtCX96bAkC4wufd1Wm";
-    public static final String API_KEY4 = "LgyKJC9NlRb0lQVpEuUVDuSKCq74sQn3";
-    public static final String SETTING = "Settings";
-    public static String SP_HOME_CITY = "HomeCityID";
-    private static final int [] backgroundImages = {R.drawable.day_8,R.drawable.day_10,
-            R.drawable.day_3,R.drawable.day_5,R.drawable.night_9,R.drawable.night_12};
+    @SuppressWarnings("SpellCheckingInspection")
+    private static final String [] API_KEY = {
+            "0B2ulCEWdRYvelMurc54xcaAPpbyarMw",
+            "ADaTpwFUasrct7lU8w15pt8ye04bO19k",
+            "9rCSj6Cgvbx4T6EtCX96bAkC4wufd1Wm",
+            "LgyKJC9NlRb0lQVpEuUVDuSKCq74sQn3"
+    };
 
     private static final int [] weatherImages = {
             R.drawable.w1,R.drawable.w1,
@@ -86,7 +84,7 @@ public class Utils {
             0,0
     };
 
-    public static String [] weatherIconLink={
+    private static final String [] weatherIconLink={
             "http://www.developer.accuweather.com/sites/default/files/01-s.png",
             "http://www.developer.accuweather.com/sites/default/files/02-s.png",
             "http://www.developer.accuweather.com/sites/default/files/03-s.png",
@@ -212,7 +210,7 @@ public class Utils {
     }
     public static String UnitCovertFToC(String temp){
         float t = Float.parseFloat(temp);
-        float ans = (float) (t-32)*5/9;
+        float ans = (t-32) *5/9;
         return new DecimalFormat("##").format(Math.floor(ans));
     }
     public static String UnitCovertCToF(String temp){
@@ -224,24 +222,6 @@ public class Utils {
         return new DecimalFormat("##").format(Math.floor(Float.parseFloat(str)));
     }
 
-    public static int getHeaderImage() {
-        Date d = Calendar.getInstance().getTime();
-        Log.d("Hours", String.valueOf(d.getHours()));
-        int hours = d.getHours();
-        if (hours<5){
-            return backgroundImages[5];
-        }
-        else if (hours<9)
-            return backgroundImages[0];
-        else if (hours<13)
-            return backgroundImages[1];
-        else if (hours<17)
-            return backgroundImages[2];
-        else if (hours<21)
-            return backgroundImages[3];
-        else
-            return backgroundImages[4];
-    };
 
     public static int getWeatherIcon(String weatherIcon) {
         return weatherImages[Integer.parseInt(weatherIcon)];
@@ -288,16 +268,15 @@ public class Utils {
         return df.format(date);
     }
 
-    @Nullable
     public static int mapOfWeather(@Nullable String weatherIcon) {
         return weatherAnimation[Integer.parseInt(weatherIcon)];
     }
 
+    public static String getAPIKey(){
 
-    //val animation1 = AnimationUtils.loadAnimation(activity!!, R.animator.home_slide_up)
-    //rootView.infoLayout!!.animation = animation1
-//        val animation = ObjectAnimator.ofFloat(rootView.infoLayout, "translationY", -500f)
-//        animation.duration = 2000
-//        animation.start()
+        Random rand = new Random();
+        int  n = rand.nextInt(3);//3 is the maximum and the 0 is our minimum
+        return API_KEY[n];
+    }
 
 }

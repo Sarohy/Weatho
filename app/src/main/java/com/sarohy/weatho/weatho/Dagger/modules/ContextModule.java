@@ -2,8 +2,6 @@ package com.sarohy.weatho.weatho.Dagger.modules;
 
 import android.content.Context;
 
-import com.sarohy.weatho.weatho.Dagger.annotations.ApplicationScope;
-
 import dagger.Module;
 import dagger.Provides;
 

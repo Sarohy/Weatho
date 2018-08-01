@@ -1,36 +1,39 @@
 package com.sarohy.weatho.weatho.View.Activity
 
-import android.app.*
+import android.app.ActivityOptions
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentActivity
+import android.support.v4.app.FragmentManager
+import android.support.v4.app.FragmentStatePagerAdapter
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import com.sarohy.weatho.weatho.View.Fragment.WeatherFragment
-import kotlinx.android.synthetic.main.activity_main.*
-import android.arch.lifecycle.ViewModelProviders
-import android.support.v4.app.*
 import com.sarohy.weatho.weatho.Model.DBModel.Location
+import com.sarohy.weatho.weatho.R
+import com.sarohy.weatho.weatho.SharedPreferencesClass
+import com.sarohy.weatho.weatho.View.Fragment.WeatherFragment
 import com.sarohy.weatho.weatho.ViewModel.MainActivityViewModel
-import android.content.Context
-import android.preference.PreferenceManager
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import com.sarohy.weatho.weatho.*
+import com.sarohy.weatho.weatho.WeatherUpdateReceiver
+import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
-import android.os.Build
-import android.support.annotation.RequiresApi
-import com.sarohy.weatho.weatho.Dagger.modules.ContextModule
 import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
 
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
-    lateinit var viewModel: MainActivityViewModel
+    private lateinit var viewModel: MainActivityViewModel
     private val LOG_TAG = MainActivity::class.java.simpleName + "Test: In Detail Fragment"
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -64,7 +67,7 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, WeatherUpdateReceiver::class.java)
             val alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
             val calendar = Calendar.getInstance()
-            Log.d(LOG_TAG, autoUpdate.toString());
+            Log.d(LOG_TAG, autoUpdate.toString())
             alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis + (1000 * 60 * autoUpdate).toLong(), (1000 * 60 * autoUpdate).toLong(), alarmIntent)
         }
     }
@@ -103,20 +106,16 @@ class MainActivity : AppCompatActivity() {
 
     inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
 
-        var array:ArrayList<Location>
-
-        init {
-            array = ArrayList<Location>()
-        }
+        var array:ArrayList<Location> = ArrayList()
 
         override fun getItem(position: Int): Fragment {
-            var f = WeatherFragment.newInstance(array.get(position))
+            val f = WeatherFragment.newInstance(array[position])
             f.retainInstance = true
             return f
         }
 
         override fun getCount(): Int {
-            return array.size ?: 0
+            return array.size
         }
 
         fun updateList(cities: ArrayList<Location>?) {

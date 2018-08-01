@@ -12,7 +12,7 @@ import java.util.List;
 
 public class CityListViewModel extends AndroidViewModel {
     private LiveData<List<Location>> cities;
-    private ProjectRepository projectRepository;
+    private final ProjectRepository projectRepository;
 
 
     public CityListViewModel(@NonNull Application application) {

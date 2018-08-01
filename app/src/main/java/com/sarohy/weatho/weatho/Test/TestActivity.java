@@ -1,24 +1,22 @@
 package com.sarohy.weatho.weatho.Test;
 
-import android.os.Build;
+import android.annotation.SuppressLint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
 import com.sarohy.weatho.weatho.R;
 
 public class TestActivity extends AppCompatActivity {
 
-    WebView webView;
+    private WebView webView;
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
-        webView = (WebView)findViewById(R.id.wv_anim);
+        webView = findViewById(R.id.wv_anim);
 
         WebSettings webSetting = webView.getSettings();
         //webSetting.setBuiltInZoomControls(true);
@@ -31,13 +29,5 @@ public class TestActivity extends AppCompatActivity {
             }
         });
 
-    }
-    private class WebViewClient extends android.webkit.WebViewClient
-    {
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url)
-        {
-            return super.shouldOverrideUrlLoading(view, url);
-        }
     }
 }

@@ -9,11 +9,11 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,7 +22,6 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.Toast;
 
-import com.sarohy.weatho.weatho.Database.AppDatabase;
 import com.sarohy.weatho.weatho.Model.APIModel.City;
 import com.sarohy.weatho.weatho.Model.DBModel.Location;
 import com.sarohy.weatho.weatho.R;
@@ -34,7 +33,6 @@ import com.sarohy.weatho.weatho.ViewModel.CityListViewModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,11 +48,9 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
     private
     Activity activity;
     private final int REQUEST_CODE = 2;
-    AppDatabase appDatabase;
-    CityListViewModel viewModel;
+    private CityListViewModel viewModel;
     private Context context;
-    CityListRVAdapter cityListRVAdapter;
-    private static final String LOG_TAG = LocationActivity.class.getSimpleName()+"Test: In AddLocationActivity";
+    private CityListRVAdapter cityListRVAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +63,6 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
     private void init() {
         context = this;
         activity = this;
-        appDatabase = AppDatabase.getAppDatabase(this);
         viewModel = ViewModelProviders.of((FragmentActivity) context).get(CityListViewModel.class);
         cityListRVAdapter = new CityListRVAdapter(new ArrayList<Location>(),this);
         setup();

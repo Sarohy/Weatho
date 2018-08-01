@@ -5,7 +5,6 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
-;
 import com.sarohy.weatho.weatho.Converter;
 import com.sarohy.weatho.weatho.Model.DAO.CurrentWeatherDAO;
 import com.sarohy.weatho.weatho.Model.DAO.LocationDAO;

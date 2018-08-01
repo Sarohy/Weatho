@@ -20,7 +20,7 @@ import com.sarohy.weatho.weatho.Model.DBModel.Location;
 import com.sarohy.weatho.weatho.Model.DBModel.WeatherHour;
 import com.sarohy.weatho.weatho.Model.DBModel.WeatherDay;
 import com.sarohy.weatho.weatho.Utils;
-import com.sarohy.weatho.weatho.WeathoAppliccation;
+import com.sarohy.weatho.weatho.WeathoApplication;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -37,15 +37,15 @@ public class ProjectRepository {
     private static final String LOG_TAG = ProjectRepository.class.getSimpleName();
 
     private final AppDatabase appDatabase;
-    private APIInterface apiService;
-    private String API_KEY;
-    private Context context;
-    private String toastMessage = "Request Overflowed!!";
+    private final APIInterface apiService;
+    private final String API_KEY;
+    private final Context context;
+    private final String toastMessage = "Request Overflowed!!";
 
     public ProjectRepository(Context context) {
-        this.API_KEY = Utils.API_KEY4;
+        this.API_KEY = Utils.getAPIKey();
         this.context = context;
-        ApplicationComponent component = WeathoAppliccation.component;
+        ApplicationComponent component = WeathoApplication.component;
         apiService = component.getRetrofit();
         appDatabase = component.getAppDatabase();
     }
@@ -144,10 +144,8 @@ public class ProjectRepository {
                             public void run() {
                                 appDatabase.weatherOf12HoursDAO().deleteByCity(cityKey);
                                 Log.d(LOG_TAG, "Inserting Hour Weather Forecast");
-                                ArrayList<WeatherHour> array = new ArrayList<>();
                                 for (final HourForecast d : dayWeatherForecasts) {
                                     WeatherHour weather12Hour = Utils.weatherOf12HoursAPItoDB(cityKey, d);
-                                    array.add(weather12Hour);
                                     appDatabase.weatherOf12HoursDAO().insertAll(weather12Hour);
                                 }
                             }
@@ -167,12 +165,12 @@ public class ProjectRepository {
         });
     }
 
-    public void fetchCurrentWeather(final String cityKey) {
+    private void fetchCurrentWeather(final String cityKey) {
         Call<ArrayList<CurrentWeather>> call = apiService.getCurrentUpdate(cityKey, API_KEY);
         call.enqueue(new Callback<ArrayList<CurrentWeather>>() {
             @Override
             public void onResponse(@NonNull Call<ArrayList<CurrentWeather>> call, @NonNull Response<ArrayList<CurrentWeather>> response) {
-                final ArrayList<CurrentWeather> currentWeather = (ArrayList<CurrentWeather>) response.body();
+                final ArrayList<CurrentWeather> currentWeather = response.body();
                 if (currentWeather != null && !response.message().toLowerCase().equals("unauthorized")) {
                     Thread t = new Thread(new Runnable() {
                         @Override
@@ -203,6 +201,7 @@ public class ProjectRepository {
             @Override
             public void onResponse(@NonNull Call<City> call, @NonNull final Response<City> response) {
                 if (response.body() != null && !response.message().toLowerCase().equals("unauthorized")) {
+                    assert response.body() != null;
                     callBack.onLocationFetchedByGeo(Utils.cityAPItoDB(response.body()));
                 }
                 else {
@@ -262,7 +261,7 @@ public class ProjectRepository {
             }
 
             Call<DayForecastList> call2 = apiService.getForecastOf5Day(cityKey, API_KEY);
-            DayForecastList weatherOf5Day = null;
+            DayForecastList weatherOf5Day;
             try {
                 weatherOf5Day = call2.execute().body();
                 if (weatherOf5Day != null) {
@@ -283,7 +282,7 @@ public class ProjectRepository {
             Call<ArrayList<CurrentWeather>> call3 = apiService.getCurrentUpdate(cityKey, API_KEY);
             final ArrayList<CurrentWeather> currentWeather;
             try {
-                currentWeather = (ArrayList<CurrentWeather>) call3.execute().body();
+                currentWeather = call3.execute().body();
                 if (currentWeather != null) {
                     appDatabase.currentWeatherDAO().deleteAll();
                     appDatabase.currentWeatherDAO().insertAll(Utils.currentWeatherAPItoDB(
