@@ -16,15 +16,8 @@ public interface WeatherDayDAO {
     @Query("SELECT * FROM WeatherDay")
     List<WeatherDay> getAll();
 
-//    @Query("SELECT * FROM WeatherDay where Date LIKE  :firstName AND last_name LIKE :lastName")
-//    City findByName(String firstName, String lastName);
-
-
     @Query("SELECT * FROM WeatherDay where CityKey is  :cityKey ")
     LiveData<List<WeatherDay>> forecastByCity(String cityKey);
-
-    @Query("SELECT COUNT(*) from WeatherDay")
-    int countCities();
 
     @Insert
     void insertAll(WeatherDay... weatherDays);
@@ -34,6 +27,7 @@ public interface WeatherDayDAO {
 
     @Query("DELETE FROM WeatherDay Where CityKey is :cityKey")
     void deleteByCity(String cityKey);
+
     @Query("DELETE FROM WeatherDay")
     void deleteAll();
 }

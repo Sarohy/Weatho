@@ -15,15 +15,8 @@ public interface WeatherHoursDAO {
     @Query("SELECT * FROM WeatherHour")
     List<WeatherHour> getAll();
 
-//    @Query("SELECT * FROM WeatherDay where Date LIKE  :firstName AND last_name LIKE :lastName")
-//    City findByName(String firstName, String lastName);
-
-
     @Query("SELECT * FROM WeatherHour where CityKey is  :cityKey")
     LiveData<List<WeatherHour>> forecastByCity(String cityKey);
-
-    @Query("SELECT COUNT(*) from WeatherHour")
-    int countCities();
 
     @Insert
     void insertAll(WeatherHour... weather12Hours);
@@ -33,6 +26,7 @@ public interface WeatherHoursDAO {
 
     @Query("DELETE FROM WeatherHour Where CityKey is :cityKey")
     void deleteByCity(String cityKey);
+
     @Query("DELETE FROM WeatherHour")
     void deleteAll();
 }

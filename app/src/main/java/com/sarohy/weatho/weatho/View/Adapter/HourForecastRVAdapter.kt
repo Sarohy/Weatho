@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.sarohy.weatho.weatho.Model.DBModel.WeatherHour
 import com.sarohy.weatho.weatho.R
+import com.sarohy.weatho.weatho.SharedPreferencesClass
 import com.sarohy.weatho.weatho.Utils
 import kotlinx.android.synthetic.main.item_hourly_forecast_list.view.*
 
@@ -49,8 +50,8 @@ class HourForecastRVAdapter(citiesList: ArrayList<WeatherHour>, context: Activit
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val weatherDay = dataListAllItems[position]
-        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        val temperatureUnit = Integer.parseInt(prefs.getString("temperature", "1")!!)
+        val prefs = SharedPreferencesClass(context)
+        val temperatureUnit = Integer.parseInt(prefs.temperature!!)
         holder.temperature.text = Utils.showCurrentWeather(temperatureUnit,weatherDay.temperature,weatherDay.temperatureUnit)
         holder.phrase.text = weatherDay.weatherText
         holder.time.text = Utils.DateToTime(weatherDay.localObservationDateTime)

@@ -18,6 +18,7 @@ import com.sarohy.weatho.weatho.ViewModel.DetailWeatherViewModelFactory
 import kotlinx.android.synthetic.main.fragment_detail_weather.view.*
 import android.arch.lifecycle.Observer
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.animation.Interpolator
 import com.sarohy.weatho.weatho.Model.DBModel.WeatherHour
 import kotlin.collections.ArrayList
@@ -42,6 +43,7 @@ class WeatherDetailFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private fun observers() {
         viewModel.getForecast().observe(context as LifecycleOwner, Observer<List<WeatherHour>> { fetch ->
             hourForecastRVAdapter.setArray(fetch)
+            Log.d("Tested","Check")
             hourForecastRVAdapter.notifyDataSetChanged()
             rootView.root_layout.isRefreshing = false
         })

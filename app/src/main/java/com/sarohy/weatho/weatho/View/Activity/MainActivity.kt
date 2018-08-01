@@ -57,8 +57,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun alarmManager() {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        val autoUpdate = Integer.parseInt(prefs.getString("autoUpdate", "60")!!)
+        val prefs = SharedPreferencesClass(this)
+        val autoUpdate = Integer.parseInt(prefs.autoUpdate!!)
         if (autoUpdate != -1) {
             val alarmMgr = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             val intent = Intent(this, WeatherUpdateReceiver::class.java)

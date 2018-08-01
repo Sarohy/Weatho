@@ -41,6 +41,7 @@ import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 
 import com.sarohy.weatho.weatho.R;
+import com.sarohy.weatho.weatho.SharedPreferencesClass;
 import com.sarohy.weatho.weatho.Utils;
 import com.sarohy.weatho.weatho.ViewModel.GeoLocationViewModel;
 
@@ -265,11 +266,8 @@ public class GeoLocationActivity extends AppCompatActivity implements
         switch (v.getId()){
             case R.id.fab_done:
                 viewModel.addLocation(locationDB[0]);
-                SharedPreferences sharedPreferences = getSharedPreferences(Utils.City,
-                        Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString(Utils.CityKey,locationDB[0].getKey());
-                editor.apply();
+                SharedPreferencesClass sharedPreferencesClass = new SharedPreferencesClass(this);
+                sharedPreferencesClass.setCityKey(locationDB[0].getKey());
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
                 finish();
                 break;

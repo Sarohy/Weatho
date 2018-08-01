@@ -19,9 +19,6 @@ public interface CurrentWeatherDAO {
     @Query("SELECT * FROM WeatherCurrent where CityKey is  :cityKey")
     LiveData<WeatherCurrent> forecastByCity(String cityKey);
 
-    @Query("SELECT COUNT(*) from WeatherDay")
-    int countCities();
-
     @Insert
     void insertAll(WeatherCurrent... currentWeatherUpdates);
 
@@ -30,6 +27,7 @@ public interface CurrentWeatherDAO {
 
     @Query("DELETE FROM WeatherCurrent Where CityKey is :cityKey")
     void deleteByCity(String cityKey);
+
     @Query("DELETE FROM WeatherCurrent")
     void deleteAll();
 }

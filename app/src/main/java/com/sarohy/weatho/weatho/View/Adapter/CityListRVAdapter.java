@@ -1,8 +1,6 @@
 package com.sarohy.weatho.weatho.View.Adapter;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +12,7 @@ import android.widget.TextView;
 
 import com.sarohy.weatho.weatho.Model.DBModel.Location;
 import com.sarohy.weatho.weatho.R;
+import com.sarohy.weatho.weatho.SharedPreferencesClass;
 import com.sarohy.weatho.weatho.Utils;
 
 import java.util.List;
@@ -23,6 +22,7 @@ public class CityListRVAdapter extends RecyclerView.Adapter<CityListRVAdapter.My
 
     private List<Location> dataListAllItems;
     private Activity context;
+    private SharedPreferencesClass sharedPreferencesClass;
 
 
     public void updateList(List<Location> fetch) {
@@ -30,7 +30,6 @@ public class CityListRVAdapter extends RecyclerView.Adapter<CityListRVAdapter.My
         dataListAllItems.addAll(fetch);
     }
 
-    SharedPreferences sharedPreferences;
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView  locationName, temperature;
         ImageButton homeBtn;
@@ -49,6 +48,7 @@ public class CityListRVAdapter extends RecyclerView.Adapter<CityListRVAdapter.My
     public CityListRVAdapter(List<Location> citiesList,Activity context) {
         this.context = context;
         this.dataListAllItems = citiesList;
+        sharedPreferencesClass = new SharedPreferencesClass(context);
     }
 
     @NonNull
@@ -56,8 +56,6 @@ public class CityListRVAdapter extends RecyclerView.Adapter<CityListRVAdapter.My
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_cities_list, parent, false);
-        sharedPreferences = context.getSharedPreferences(Utils.City,
-                Context.MODE_PRIVATE);
         return new MyViewHolder(itemView);
     }
 
@@ -65,7 +63,7 @@ public class CityListRVAdapter extends RecyclerView.Adapter<CityListRVAdapter.My
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         final Location city = dataListAllItems.get(position);
         holder.locationName.setText(city.getDataToDisplay());
-        String homeKey =sharedPreferences.getString(Utils.CityKey,"-1");
+        String homeKey = sharedPreferencesClass.getCityKey();
         if (city.getKey().equals(homeKey)){
             holder.homeBtn.setImageResource(R.drawable.ic_home_white_selected_24dp);
         }
@@ -73,10 +71,8 @@ public class CityListRVAdapter extends RecyclerView.Adapter<CityListRVAdapter.My
             holder.homeBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString(Utils.CityKey,city.getKey());
-                    editor.apply();
-                    context.finish();
+                sharedPreferencesClass.setCityKey(city.getKey());
+                context.finish();
                 }
             });
         }

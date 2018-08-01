@@ -5,6 +5,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
 import com.sarohy.weatho.weatho.Model.DBModel.Location;
@@ -19,10 +20,7 @@ public interface LocationDAO {
     @Query("SELECT * FROM Location")
     List<Location> getAllList();
 
-    @Query("SELECT COUNT(*) from Location")
-    int countCities();
-
-    @Insert
+    @Insert(onConflict= OnConflictStrategy.REPLACE)
     void insertAll(Location... locations);
 
     @Delete

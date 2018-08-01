@@ -15,7 +15,7 @@ import com.sarohy.weatho.weatho.R
 import com.sarohy.weatho.weatho.Utils
 import kotlinx.android.synthetic.main.item_day_forecast_list.view.*
 import com.bumptech.glide.request.RequestOptions
-
+import com.sarohy.weatho.weatho.SharedPreferencesClass
 
 
 class DaysForecastRVAdapter(citiesList: ArrayList<WeatherDay>, context: Activity) : RecyclerView.Adapter<DaysForecastRVAdapter.MyViewHolder>() {
@@ -55,8 +55,8 @@ class DaysForecastRVAdapter(citiesList: ArrayList<WeatherDay>, context: Activity
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val weatherDay = dataListAllItems[position]
-        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        val temperatureUnit = Integer.parseInt(prefs.getString("temperature", "1")!!)
+        val prefs = SharedPreferencesClass(context)
+        val temperatureUnit = Integer.parseInt(prefs.temperature!!)
         holder.temperature.text = Utils.showHiLowWeather(temperatureUnit,weatherDay.temperatureMax, weatherDay.temperatureMin,weatherDay.temperatureUnit)
         holder.date.text =  Utils.DateToString(weatherDay.date)
         holder.nightPhrase.text = weatherDay.iconPhraseNight
