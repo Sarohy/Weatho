@@ -22,8 +22,10 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class Utils {
     public static final String BASE_URL = "http://dataservice.accuweather.com/";
@@ -279,4 +281,17 @@ public class Utils {
         return API_KEY[n];
     }
 
+    public static String getLastUpdateTime(String lastUpdateTime) {
+        Date date1 = Utils.StringToDate(lastUpdateTime);
+        if (date1==null){
+            date1 = Calendar.getInstance().getTime();
+        }
+        Date date2 = Calendar.getInstance().getTime();
+        return String.valueOf(getDateDiff(date1,date2, TimeUnit.MINUTES));
+    }
+
+    public static long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
+        long diffInMillies = date2.getTime() - date1.getTime();
+        return timeUnit.convert(diffInMillies,TimeUnit.MILLISECONDS);
+    }
 }

@@ -8,26 +8,27 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.sarohy.weatho.weatho.API.APIInterface;
-import com.sarohy.weatho.weatho.Dagger.components.ApplicationComponent;
 import com.sarohy.weatho.weatho.Database.AppDatabase;
 import com.sarohy.weatho.weatho.Model.APIModel.City;
 import com.sarohy.weatho.weatho.Model.APIModel.CurrentWeather;
 import com.sarohy.weatho.weatho.Model.APIModel.DayForecast;
-import com.sarohy.weatho.weatho.Model.APIModel.HourForecast;
 import com.sarohy.weatho.weatho.Model.APIModel.DayForecastList;
-import com.sarohy.weatho.weatho.Model.DBModel.WeatherCurrent;
+import com.sarohy.weatho.weatho.Model.APIModel.HourForecast;
 import com.sarohy.weatho.weatho.Model.DBModel.Location;
-import com.sarohy.weatho.weatho.Model.DBModel.WeatherHour;
+import com.sarohy.weatho.weatho.Model.DBModel.WeatherCurrent;
 import com.sarohy.weatho.weatho.Model.DBModel.WeatherDay;
+import com.sarohy.weatho.weatho.Model.DBModel.WeatherHour;
+import com.sarohy.weatho.weatho.SharedPreferencesClass;
 import com.sarohy.weatho.weatho.Utils;
 import com.sarohy.weatho.weatho.WeathoApplication;
 
 import org.jetbrains.annotations.NotNull;
 
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,8 +37,10 @@ import retrofit2.Response;
 public class ProjectRepository {
     private static final String LOG_TAG = ProjectRepository.class.getSimpleName();
 
-    private final AppDatabase appDatabase;
-    private final APIInterface apiService;
+    @Inject
+    AppDatabase appDatabase;
+    @Inject
+    APIInterface apiService;
     private final String API_KEY;
     private final Context context;
     private final String toastMessage = "Request Overflowed!!";
@@ -45,9 +48,9 @@ public class ProjectRepository {
     public ProjectRepository(Context context) {
         this.API_KEY = Utils.getAPIKey();
         this.context = context;
-        ApplicationComponent component = WeathoApplication.component;
-        apiService = component.getRetrofit();
-        appDatabase = component.getAppDatabase();
+        WeathoApplication.component.injectRepo(this);
+        //apiService = component.getRetrofit();
+        //appDatabase = component.getAppDatabase();
     }
 
     public LiveData<List<Location>> loadLocationFromDB() {
@@ -177,7 +180,9 @@ public class ProjectRepository {
                         public void run() {
                             Log.d(LOG_TAG, "Inserting Current Weather");
                             appDatabase.currentWeatherDAO().deleteByCity(cityKey);
-                            appDatabase.currentWeatherDAO().insertAll(Utils.currentWeatherAPItoDB(cityKey, currentWeather.get(0)));
+                            WeatherCurrent weatherCurrent = Utils.currentWeatherAPItoDB(cityKey, currentWeather.get(0));
+                            updatePref(weatherCurrent);
+                            appDatabase.currentWeatherDAO().insertAll(weatherCurrent);
                         }
                     });
                     t.start();
@@ -285,8 +290,10 @@ public class ProjectRepository {
                 currentWeather = call3.execute().body();
                 if (currentWeather != null) {
                     appDatabase.currentWeatherDAO().deleteAll();
-                    appDatabase.currentWeatherDAO().insertAll(Utils.currentWeatherAPItoDB(
-                            cityKey, currentWeather.get(0)));
+                    WeatherCurrent weatherCurrent =Utils.currentWeatherAPItoDB(
+                            cityKey, currentWeather.get(0));
+                    updatePref(weatherCurrent);
+                    appDatabase.currentWeatherDAO().insertAll(weatherCurrent);
                     Log.d(LOG_TAG, "Added to DB - current");
                 } else {
                     Toast.makeText(context, toastMessage, Toast.LENGTH_LONG).show();
@@ -303,6 +310,18 @@ public class ProjectRepository {
         return str.toString();
 
 
+    }
+
+    private void updatePref(WeatherCurrent weatherCurrent) {
+        SharedPreferencesClass sharedPreferencesClass = WeathoApplication.component.getSharedPrefs();
+        if (weatherCurrent.getCityKey().equals(sharedPreferencesClass.getCityKey())){
+            sharedPreferencesClass.setCurrentTemp(weatherCurrent.getTemperature());
+            sharedPreferencesClass.setCurrentTempUnit(weatherCurrent.getTemperatureUnit());
+            sharedPreferencesClass.setCurrentWeatherPhrase(weatherCurrent.getWeatherText());
+            sharedPreferencesClass.setLastUpdateTime(Utils.DateToString(
+                    weatherCurrent.getLocalObservationDateTime()));
+            sharedPreferencesClass.setWeatherIcon(weatherCurrent.getWeatherIcon());
+        }
     }
 
     public void loadLocationFromDB(ArrayList<Location> arrayList) {

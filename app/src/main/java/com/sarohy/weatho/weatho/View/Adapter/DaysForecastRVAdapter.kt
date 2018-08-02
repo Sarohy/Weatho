@@ -44,7 +44,7 @@ class DaysForecastRVAdapter(citiesList: ArrayList<WeatherDay>, context: Activity
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val weatherDay = dataListAllItems[position]
-        val temperatureUnit = Integer.parseInt(WeathoApplication.component.sharedPrefs.temperature!!)
+        val temperatureUnit = Integer.parseInt(WeathoApplication.component.sharedPrefs.temperatureUnit!!)
         holder.temperature.text = Utils.showHiLowWeather(temperatureUnit,weatherDay.temperatureMax, weatherDay.temperatureMin,weatherDay.temperatureUnit)
         holder.date.text =  Utils.DateToString(weatherDay.date)
         holder.nightPhrase.text = weatherDay.iconPhraseNight

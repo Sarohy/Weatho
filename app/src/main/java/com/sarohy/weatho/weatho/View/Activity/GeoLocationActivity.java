@@ -253,6 +253,7 @@ public class GeoLocationActivity extends AppCompatActivity implements
             case R.id.fab_done:
                 viewModel.addLocation(locationDB[0]);
                 WeathoApplication.component.getSharedPrefs().setCityKey(locationDB[0].getKey());
+                WeathoApplication.component.getSharedPrefs().setCityName(locationDB[0].getLocalizedName());
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
                 finish();
                 break;

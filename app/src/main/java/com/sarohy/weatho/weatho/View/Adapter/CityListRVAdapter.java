@@ -70,6 +70,7 @@ public class CityListRVAdapter extends RecyclerView.Adapter<CityListRVAdapter.My
                 @Override
                 public void onClick(View v) {
                 WeathoApplication.component.getSharedPrefs().setCityKey(city.getKey());
+                    WeathoApplication.component.getSharedPrefs().setCityName(city.getLocalizedName());
                 context.finish();
                 }
             });

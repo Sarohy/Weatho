@@ -12,7 +12,7 @@ import java.util.List;
 @Dao
 public interface WeatherDayDAO {
 
-    @Query("SELECT * FROM WeatherDay where CityKey is  :cityKey ")
+    @Query("SELECT * FROM WeatherDay where CityKey is :cityKey ")
     LiveData<List<WeatherDay>> forecastByCity(String cityKey);
 
     @Insert

@@ -1,4 +1,4 @@
-package com.sarohy.weatho.weatho.Test;
+package com.sarohy.weatho.weatho;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -7,6 +7,9 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.sarohy.weatho.weatho.R;
+import com.sarohy.weatho.weatho.SharedPreferencesClass;
+import com.sarohy.weatho.weatho.Utils;
+import com.sarohy.weatho.weatho.WeathoApplication;
 
 /**
  * Implementation of App Widget functionality.
@@ -16,10 +19,24 @@ public class WeatherWidget extends AppWidgetProvider {
     private static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                         int appWidgetId) {
 
-        CharSequence widgetText = context.getString(R.string.appwidget_text);
+        //CharSequence widgetText = context.getString(R.string.appwidget_text);
         // Construct the RemoteViews object
+        SharedPreferencesClass sharedPreferencesClass = WeathoApplication.component.getSharedPrefs();
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.weather_widget);
-        views.setTextViewText(R.id.appwidget_text, widgetText);
+        views.setTextViewText(R.id.tv_current_temp, Utils.showCurrentWeather(
+                Integer.valueOf(sharedPreferencesClass.getTemperatureUnit()),
+                sharedPreferencesClass.getCurrentTemp(),
+                sharedPreferencesClass.getCurrentTempUnit()));
+        views.setTextViewText(R.id.tv_weather_phrase, sharedPreferencesClass.getCurrentWeatherPhrase());
+        views.setTextViewText(R.id.tv_location, sharedPreferencesClass.getCityName());
+        views.setTextViewText(R.id.tv_last_update, Utils.getLastUpdateTime(sharedPreferencesClass.getLastUpdateTime()));
+        views.setImageViewResource(R.id.iv_weather_icon,Utils.getWeatherIcon(sharedPreferencesClass.getWeatherIcon()));
+//        AppWidgetTarget appWidgetTarget = new AppWidgetTarget( context,R.id.iv_weather_icon,views);
+//        Glide
+//                .with( context.getApplicationContext() )
+//                .load( Utils.getWeatherIconLink(sharedPreferencesClass.getWeatherIcon()))
+//                .into(appWidgetTarget).submit();
+
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);

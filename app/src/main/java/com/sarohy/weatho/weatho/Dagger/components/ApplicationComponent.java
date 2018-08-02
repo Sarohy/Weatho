@@ -3,11 +3,10 @@ package com.sarohy.weatho.weatho.Dagger.components;
 
 
 import com.bumptech.glide.RequestManager;
-import com.sarohy.weatho.weatho.API.APIInterface;
-import com.sarohy.weatho.weatho.Dagger.modules.ContextModule;
-import com.sarohy.weatho.weatho.Database.AppDatabase;
 import com.sarohy.weatho.weatho.Dagger.annotations.ApplicationScope;
+import com.sarohy.weatho.weatho.Dagger.modules.ContextModule;
 import com.sarohy.weatho.weatho.Dagger.modules.ServiceModule;
+import com.sarohy.weatho.weatho.Model.ProjectRepository;
 import com.sarohy.weatho.weatho.SharedPreferencesClass;
 
 import dagger.Component;
@@ -22,12 +21,12 @@ import dagger.Component;
 @Component(modules = {ContextModule.class,ServiceModule.class}) // tell which modules to use in order to generate this instance
 public interface ApplicationComponent {
 
-    AppDatabase getAppDatabase();
 
-    APIInterface getRetrofit();
 
     SharedPreferencesClass getSharedPrefs();
 
     RequestManager getGlide();
+
+    void injectRepo(ProjectRepository repository);
 
 }

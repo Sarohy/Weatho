@@ -38,7 +38,7 @@ class HourForecastRVAdapter(citiesList: ArrayList<WeatherHour>) : RecyclerView.A
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val weatherDay = dataListAllItems[position]
-        val temperatureUnit = Integer.parseInt(WeathoApplication.component.sharedPrefs.temperature!!)
+        val temperatureUnit = Integer.parseInt(WeathoApplication.component.sharedPrefs.temperatureUnit!!)
         holder.temperature.text = Utils.showCurrentWeather(temperatureUnit,weatherDay.temperature,weatherDay.temperatureUnit)
         holder.phrase.text = weatherDay.weatherText
         holder.time.text = Utils.DateToTime(weatherDay.localObservationDateTime)
