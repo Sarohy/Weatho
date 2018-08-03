@@ -1,6 +1,7 @@
 package com.sarohy.weatho.weatho.Model;
 
 
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -30,9 +31,16 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+
+import io.reactivex.Flowable;
+import io.reactivex.Single;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+;
 
 public class ProjectRepository {
     private static final String LOG_TAG = ProjectRepository.class.getSimpleName();
@@ -168,35 +176,50 @@ public class ProjectRepository {
         });
     }
 
+    @SuppressLint("CheckResult")
     private void fetchCurrentWeather(final String cityKey) {
-        Call<ArrayList<CurrentWeather>> call = apiService.getCurrentUpdate(cityKey, API_KEY);
-        call.enqueue(new Callback<ArrayList<CurrentWeather>>() {
+         apiService.getCurrentUpdate(cityKey, API_KEY)
+                 .observeOn(Schedulers.io())
+                 .subscribeOn(Schedulers.io())
+                 .doOnNext(new Consumer<ArrayList<CurrentWeather>>() {
             @Override
-            public void onResponse(@NonNull Call<ArrayList<CurrentWeather>> call, @NonNull Response<ArrayList<CurrentWeather>> response) {
-                final ArrayList<CurrentWeather> currentWeather = response.body();
-                if (currentWeather != null && !response.message().toLowerCase().equals("unauthorized")) {
-                    Thread t = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Log.d(LOG_TAG, "Inserting Current Weather");
-                            appDatabase.currentWeatherDAO().deleteByCity(cityKey);
-                            WeatherCurrent weatherCurrent = Utils.currentWeatherAPItoDB(cityKey, currentWeather.get(0));
-                            updatePref(weatherCurrent);
-                            appDatabase.currentWeatherDAO().insertAll(weatherCurrent);
-                        }
-                    });
-                    t.start();
+            public void accept(ArrayList<CurrentWeather> currentWeathers) throws Exception {
+                appDatabase.currentWeatherDAO().deleteByCity(cityKey);
+                for (CurrentWeather currentWeather:currentWeathers){
+                    WeatherCurrent weatherCurrent = Utils.currentWeatherAPItoDB(cityKey, currentWeather);
+                    updatePref(weatherCurrent);
+                    appDatabase.currentWeatherDAO().insertAll(weatherCurrent);
                 }
-                else {
-                    Toast.makeText(context,toastMessage,Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<ArrayList<CurrentWeather>> call, @NonNull Throwable t) {
-                Log.d(LOG_TAG, "Failed");
             }
         });
+//        Call<ArrayList<CurrentWeather>> call =apiService.getCurrentUpdate(cityKey, API_KEY);
+//        call.enqueue(new Callback<ArrayList<CurrentWeather>>() {
+//            @Override
+//            public void onResponse(@NonNull Call<ArrayList<CurrentWeather>> call, @NonNull Response<ArrayList<CurrentWeather>> response) {
+//                final ArrayList<CurrentWeather> currentWeather = response.body();
+//                if (currentWeather != null && !response.message().toLowerCase().equals("unauthorized")) {
+//                    Thread t = new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            Log.d(LOG_TAG, "Inserting Current Weather");
+//                            appDatabase.currentWeatherDAO().deleteByCity(cityKey);
+//                            WeatherCurrent weatherCurrent = Utils.currentWeatherAPItoDB(cityKey, currentWeather.get(0));
+//                            updatePref(weatherCurrent);
+//                            appDatabase.currentWeatherDAO().insertAll(weatherCurrent);
+//                        }
+//                    });
+//                    t.start();
+//                }
+//                else {
+//                    Toast.makeText(context,toastMessage,Toast.LENGTH_LONG).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(@NonNull Call<ArrayList<CurrentWeather>> call, @NonNull Throwable t) {
+//                Log.d(LOG_TAG, "Failed");
+//            }
+//        });
     }
 
     public void fetchLocationByGeo(final String location, final CallBack callBack) {
@@ -221,14 +244,14 @@ public class ProjectRepository {
         });
     }
 
-    public LiveData<List<WeatherDay>> loadDayForecastFromDB(@NotNull final String cityKey) {
+    public Flowable<List<WeatherDay>> loadDayForecastFromDB(@NotNull final String cityKey) {
         return appDatabase.weatherDayDAO().forecastByCity(cityKey);
     }
 
 
-    public LiveData<WeatherCurrent> loadCurrentWeatherFromDB(final String cityKey) {
-        return(appDatabase.currentWeatherDAO().forecastByCity(cityKey));
-    }
+//    public LiveData<WeatherCurrent> loadCurrentWeatherFromDB(final String cityKey) {
+//        return(appDatabase.currentWeatherDAO().forecastByCity(cityKey));
+//    }
 
     public LiveData<List<WeatherHour>> loadHourlyDataFromDB(@NotNull final String cityKey) {
         return  appDatabase.weatherOf12HoursDAO().forecastByCity(cityKey);
@@ -240,6 +263,9 @@ public class ProjectRepository {
         fetchHourlyData(key);
     }
 
+
+
+    @SuppressLint("CheckResult")
     public String loadDataASynchronous(ArrayList<Location> locations) {
         ArrayList<String> arrayList = new ArrayList<>();
         for (int i = 0; i<locations.size(); i++) {
@@ -284,23 +310,39 @@ public class ProjectRepository {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Call<ArrayList<CurrentWeather>> call3 = apiService.getCurrentUpdate(cityKey, API_KEY);
-            final ArrayList<CurrentWeather> currentWeather;
-            try {
-                currentWeather = call3.execute().body();
-                if (currentWeather != null) {
-                    appDatabase.currentWeatherDAO().deleteAll();
-                    WeatherCurrent weatherCurrent =Utils.currentWeatherAPItoDB(
-                            cityKey, currentWeather.get(0));
-                    updatePref(weatherCurrent);
-                    appDatabase.currentWeatherDAO().insertAll(weatherCurrent);
-                    Log.d(LOG_TAG, "Added to DB - current");
-                } else {
-                    Toast.makeText(context, toastMessage, Toast.LENGTH_LONG).show();
+            apiService.getCurrentUpdate(cityKey, API_KEY)
+                    .doOnNext(new Consumer<ArrayList<CurrentWeather>>() {
+                @Override
+                public void accept(ArrayList<CurrentWeather> currentWeathers) throws Exception {
+                    if (currentWeathers != null) {
+                        appDatabase.currentWeatherDAO().deleteAll();
+                        WeatherCurrent weatherCurrent =Utils.currentWeatherAPItoDB(
+                                cityKey, currentWeathers.get(0));
+                        updatePref(weatherCurrent);
+                        appDatabase.currentWeatherDAO().insertAll(weatherCurrent);
+                        Log.d(LOG_TAG, "Added to DB - current");
+                    } else {
+                        Toast.makeText(context, toastMessage, Toast.LENGTH_LONG).show();
+                    }
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            });
+//            Call<ArrayList<CurrentWeather>> call3 = apiService.getCurrentUpdate(cityKey, API_KEY);
+//            final ArrayList<CurrentWeather> currentWeather;
+//            try {
+//                currentWeather = call3.execute().body();
+//                if (currentWeather != null) {
+//                    appDatabase.currentWeatherDAO().deleteAll();
+//                    WeatherCurrent weatherCurrent =Utils.currentWeatherAPItoDB(
+//                            cityKey, currentWeather.get(0));
+//                    updatePref(weatherCurrent);
+//                    appDatabase.currentWeatherDAO().insertAll(weatherCurrent);
+//                    Log.d(LOG_TAG, "Added to DB - current");
+//                } else {
+//                    Toast.makeText(context, toastMessage, Toast.LENGTH_LONG).show();
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
         }
         Log.d(LOG_TAG,"Done");
         StringBuilder str= new StringBuilder();
@@ -327,6 +369,13 @@ public class ProjectRepository {
     public void loadLocationFromDB(ArrayList<Location> arrayList) {
         arrayList.addAll(appDatabase.locationDAO().getAllList());
     }
+
+    @NotNull
+    public Single<WeatherCurrent> loadCurrentWeatherFromDB(@NotNull String cityKey) {
+        return appDatabase.currentWeatherDAO().forecastByCity(cityKey);
+    }
+
+
     public interface CallBack{
         void onCityFetchedByWord(ArrayList<City> cities);
         void onLocationFetchedByGeo(Location location);

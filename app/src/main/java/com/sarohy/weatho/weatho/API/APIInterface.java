@@ -3,11 +3,12 @@ package com.sarohy.weatho.weatho.API;
 
 import com.sarohy.weatho.weatho.Model.APIModel.City;
 import com.sarohy.weatho.weatho.Model.APIModel.CurrentWeather;
-import com.sarohy.weatho.weatho.Model.APIModel.HourForecast;
 import com.sarohy.weatho.weatho.Model.APIModel.DayForecastList;
+import com.sarohy.weatho.weatho.Model.APIModel.HourForecast;
 
 import java.util.ArrayList;
 
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -25,7 +26,7 @@ public interface APIInterface {
     Call<ArrayList<HourForecast>> get12HoursForecast(@Path("id") String cId, @Query("apikey") String apiKey);
 
     @GET("currentconditions/v1/{id}")
-    Call<ArrayList<CurrentWeather>> getCurrentUpdate(@Path("id") String cId, @Query("apikey") String apiKey);
+    Observable<ArrayList<CurrentWeather>> getCurrentUpdate(@Path("id") String cId, @Query("apikey") String apiKey);
 
     @GET("locations/v1/cities/geoposition/search")
     Call<City> getCity(@Query("apikey") String apiKey,@Query("q") String value);
