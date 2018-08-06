@@ -2,7 +2,6 @@ package com.sarohy.weatho.weatho.Model;
 
 
 import android.annotation.SuppressLint;
-import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -31,9 +30,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-
 import io.reactivex.Flowable;
-import io.reactivex.Single;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
@@ -57,11 +54,9 @@ public class ProjectRepository {
         this.API_KEY = Utils.getAPIKey();
         this.context = context;
         WeathoApplication.component.injectRepo(this);
-        //apiService = component.getRetrofit();
-        //appDatabase = component.getAppDatabase();
     }
 
-    public LiveData<List<Location>> loadLocationFromDB() {
+    public Flowable<List<Location>> loadLocationFromDB() {
         return appDatabase.locationDAO().getAll();
     }
 
@@ -253,14 +248,14 @@ public class ProjectRepository {
 //        return(appDatabase.currentWeatherDAO().forecastByCity(cityKey));
 //    }
 
-    public LiveData<List<WeatherHour>> loadHourlyDataFromDB(@NotNull final String cityKey) {
+    public Flowable<List<WeatherHour>> loadHourlyDataFromDB(@NotNull final String cityKey) {
         return  appDatabase.weatherOf12HoursDAO().forecastByCity(cityKey);
     }
 
     public void loadAllData(String key) {
-        fetchDayForecast(key);
+        //fetchDayForecast(key);
         fetchCurrentWeather(key);
-        fetchHourlyData(key);
+        //fetchHourlyData(key);
     }
 
 
@@ -371,7 +366,7 @@ public class ProjectRepository {
     }
 
     @NotNull
-    public Single<WeatherCurrent> loadCurrentWeatherFromDB(@NotNull String cityKey) {
+    public Flowable<WeatherCurrent> loadCurrentWeatherFromDB(@NotNull String cityKey) {
         return appDatabase.currentWeatherDAO().forecastByCity(cityKey);
     }
 

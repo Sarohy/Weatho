@@ -40,6 +40,7 @@ dependencies {
 
     //retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
     implementation 'com.google.code.gson:gson:2.8.0'
 
@@ -49,7 +50,7 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:$lifecycle_version"
 
     //Room
-    def archRoomVersion = "1.0.0"
+    def archRoomVersion = "1.1.1"
     implementation 'android.arch.persistence.room:runtime:' + archRoomVersion
     annotationProcessor 'android.arch.persistence.room:compiler:' + archRoomVersion
 
@@ -69,7 +70,7 @@ dependencies {
     // RxAndroid
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
 
-    implementation "android.arch.persistence.room:rxjava2:1.0.0-alpha5"
+    implementation "android.arch.persistence.room:rxjava2:"+archRoomVersion
 
 
     implementation 'com.google.android.gms:play-services-location:15.0.1'

@@ -6,14 +6,14 @@ import android.arch.persistence.room.Query;
 
 import com.sarohy.weatho.weatho.Model.DBModel.WeatherCurrent;
 
-import io.reactivex.Single;
+import io.reactivex.Flowable;
 
 
 @Dao
 public interface CurrentWeatherDAO {
 
     @Query("SELECT * FROM WeatherCurrent where CityKey is  :cityKey")
-    Single<WeatherCurrent> forecastByCity(String cityKey);
+    Flowable<WeatherCurrent> forecastByCity(String cityKey);
 
     @Insert
     void insertAll(WeatherCurrent... currentWeatherUpdates);

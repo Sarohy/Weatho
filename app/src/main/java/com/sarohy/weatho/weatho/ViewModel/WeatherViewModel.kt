@@ -8,28 +8,16 @@ import com.sarohy.weatho.weatho.Model.DBModel.WeatherCurrent
 import com.sarohy.weatho.weatho.Model.DBModel.WeatherDay
 import com.sarohy.weatho.weatho.Model.ProjectRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 
 class WeatherViewModel(application: Application,key:String) : AndroidViewModel(application) {
     private var weatherDay:MutableLiveData<List<WeatherDay>> = MutableLiveData()
     private var projectRepository: ProjectRepository = ProjectRepository(application)
     private var currentWeather: MutableLiveData<WeatherCurrent> = MutableLiveData()
-    var disposableObserverWeatherCurrent: DisposableSingleObserver<WeatherCurrent>
     var cityKey:String = key
 
     init {
         loadData()
-        disposableObserverWeatherCurrent =object : DisposableSingleObserver<WeatherCurrent>(){
-            override fun onSuccess(t: WeatherCurrent) {
-                currentWeather.value = t
-            }
-
-            override fun onError(e: Throwable) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-        }
     }
 
     private fun loadData() {
@@ -46,7 +34,13 @@ class WeatherViewModel(application: Application,key:String) : AndroidViewModel(a
         projectRepository.loadCurrentWeatherFromDB(cityKey)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(disposableObserverWeatherCurrent)
+                .subscribe({ next->
+                    currentWeather.value = next
+                },
+                        {e->
+                            e.printStackTrace()
+                        }
+                )
     }
 
     fun getWeatherDay(): LiveData<List<WeatherDay>>{
@@ -60,9 +54,6 @@ class WeatherViewModel(application: Application,key:String) : AndroidViewModel(a
     fun updateWeatherInfo() {
         projectRepository.loadAllData(cityKey)
         loadData()
-    }
-    fun disposeElements(){
-        if(null != disposableObserverWeatherCurrent && !disposableObserverWeatherCurrent.isDisposed) disposableObserverWeatherCurrent.dispose()
     }
 
 }
