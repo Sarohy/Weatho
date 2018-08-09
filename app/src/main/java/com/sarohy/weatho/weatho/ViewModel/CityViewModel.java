@@ -20,7 +20,7 @@ public class CityViewModel extends AndroidViewModel implements ProjectRepository
 
     public CityViewModel(@NonNull Application application) {
         super(application);
-        projectRepository = new ProjectRepository(application);
+        projectRepository = new ProjectRepository();
         fetched.setValue(false);
     }
     public void getData(String str){
@@ -44,7 +44,7 @@ public class CityViewModel extends AndroidViewModel implements ProjectRepository
     public void onCityFetchedByWord(ArrayList<City> cities) {
         this.Cities.clear();
         this.Cities.addAll(cities);
-        fetched.setValue(true);
+        fetched.postValue(true);
     }
 
     @Override

@@ -24,7 +24,7 @@ public class CityListViewModel extends AndroidViewModel {
     public CityListViewModel(@NonNull Application application) {
         super(application);
         cities = new MutableLiveData<>();
-        projectRepository = new ProjectRepository(application);
+        projectRepository = new ProjectRepository();
         loadData();
     }
 

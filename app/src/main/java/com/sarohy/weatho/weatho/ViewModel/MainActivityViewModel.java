@@ -23,7 +23,7 @@ public class MainActivityViewModel extends AndroidViewModel {
     public MainActivityViewModel(@NonNull Application application) {
         super(application);
         cities = new MutableLiveData<>();
-        projectRepository = new ProjectRepository(application);
+        projectRepository = new ProjectRepository();
         loadDataFromDB();
     }
 

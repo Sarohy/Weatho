@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rl_background"
+    android:background="#4B97D1">
+
+
+    <ImageView
+        android:id="@+id/iv_sun"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="220dp"
+        android:layout_marginTop="50dp"
+        android:elevation="4dp"
+        android:src="@drawable/ic_sun_circle"
+        tools:layout_editor_absoluteX="248dp"
+        tools:layout_editor_absoluteY="93dp" />
+
+
+
+    <ImageView
+        android:tag="1"
+        android:id="@+id/iv_cloud1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="-75dp"
+        android:layout_marginTop="-75dp"
+        android:elevation="1dp"
+        android:src="@drawable/ic_cloud_circle_day_light"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="156dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <ImageView
+        android:tag="1"
+        android:id="@+id/iv_cloud2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-150dp"
+        android:elevation="1dp"
+        android:src="@drawable/ic_cloud_circle_day_big_light"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <ImageView
+        android:tag="1"
+        android:id="@+id/iv_cloud3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="300dp"
+        android:layout_marginTop="-75dp"
+        android:elevation="1dp"
+        android:src="@drawable/ic_cloud_circle_day_light"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="156dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+
+
+    <ImageView
+        android:tag="0"
+        android:id="@+id/iv_cloud4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="270dp"
+        android:layout_marginTop="-45dp"
+        android:elevation="6dp"
+        android:src="@drawable/ic_cloud_circle_day_dark"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="156dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <ImageView
+        android:tag="0"
+        android:id="@+id/iv_cloud5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="-180dp"
+        android:elevation="6dp"
+        android:src="@drawable/ic_cloud_circle_day_big_dark"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:tag="0"
+        android:id="@+id/iv_cloud6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="-75dp"
+        android:layout_marginTop="-200dp"
+        android:elevation="6dp"
+        android:src="@drawable/ic_cloud_circle_day_big_dark"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:tag="0"
+        android:id="@+id/iv_cloud7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="-210dp"
+        android:elevation="6dp"
+        android:src="@drawable/ic_cloud_circle_day_big_dark"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:tag="1"
+        android:id="@+id/iv_cloud8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="220dp"
+        android:layout_marginTop="-180dp"
+        android:elevation="4dp"
+        android:src="@drawable/ic_cloud_circle_day_big_light"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:tag="1"
+        android:id="@+id/iv_cloud9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="-40dp"
+        android:layout_marginTop="-35dp"
+        android:elevation="1dp"
+        android:src="@drawable/ic_cloud_circle_day_light"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="156dp"
+        tools:layout_editor_absoluteY="0dp" />
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/iv_clear_moon"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="-500dp"
+        android:layout_marginLeft="-500dp"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/ic_artboard_1"
+        tools:ignore="VectorDrawableCompat" />
+
+</FrameLayout>

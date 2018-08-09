@@ -4,30 +4,31 @@ import android.annotation.SuppressLint
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.transition.Slide
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Interpolator
-import android.webkit.WebView
 import com.sarohy.weatho.weatho.Model.DBModel.Location
 import com.sarohy.weatho.weatho.Model.DBModel.WeatherCurrent
 import com.sarohy.weatho.weatho.Model.DBModel.WeatherDay
 import com.sarohy.weatho.weatho.R
 import com.sarohy.weatho.weatho.RecyclerTouchListener
 import com.sarohy.weatho.weatho.Utils
-import com.sarohy.weatho.weatho.View.Activity.DetailWeatherActivity
+import com.sarohy.weatho.weatho.View.Activity.WeatherDeatilActivity
 import com.sarohy.weatho.weatho.View.Adapter.DaysForecastRVAdapter
 import com.sarohy.weatho.weatho.ViewModel.WeatherViewModel
 import com.sarohy.weatho.weatho.ViewModel.WeatherViewModelFactory
@@ -91,7 +92,7 @@ class WeatherFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener{
         rootView.rv_day_forecast.addOnItemTouchListener(RecyclerTouchListener(context, rootView.rv_day_forecast, object : RecyclerTouchListener.ClickListener {
             override fun onClick(view: View, position: Int) {
                 if (position==0){
-                    val i = Intent(activity,DetailWeatherActivity::class.java)
+                    val i = Intent(activity, WeatherDeatilActivity::class.java)
                     i.putExtra("Location",city)
                     startActivity(i)
                 }
@@ -122,17 +123,19 @@ class WeatherFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener{
     @SuppressLint("SetJavaScriptEnabled")
     private fun updateUI(rootView: View) {
         val temperatureUnit = Integer.parseInt(prefs.getString("temperature", "1")!!)
-        val webSetting = rootView.wv_weather.settings
-        webSetting.javaScriptEnabled = true
-        rootView.wv_weather.loadUrl("file:///android_asset/index.html")
-        val s = Utils.showCurrentWeather(temperatureUnit, weatherCurrent.temperature,weatherCurrent.temperatureUnit)
-        val str = "javascript:myJavaScriptFunc('"+s+"',"+Utils.mapOfWeather(weatherCurrent.weatherIcon)+",'"+weatherCurrent.weatherText+"')"
-        Log.d("Tested",str)
-        rootView.wv_weather.webViewClient = object : android.webkit.WebViewClient() {
-            override fun onPageFinished(view: WebView, url: String) {
-                rootView.wv_weather.loadUrl(str)
-            }
-        }
+//        val webSetting = rootView.wv_weather.settings
+//        webSetting.javaScriptEnabled = true
+//        rootView.wv_weather.loadUrl("file:///android_asset/index.html")
+//        val s = Utils.showCurrentWeather(temperatureUnit, weatherCurrent.temperature,weatherCurrent.temperatureUnit)
+//        val str = "javascript:myJavaScriptFunc('"+s+"',"+Utils.mapOfWeather(weatherCurrent.weatherIcon)+",'"+weatherCurrent.weatherText+"')"
+//        Log.d("Tested",str)
+//        rootView.wv_weather.webViewClient = object : android.webkit.WebViewClient() {
+//            override fun onPageFinished(view: WebView, url: String) {
+//                rootView.wv_weather.loadUrl(str)
+//            }
+//        }
+
+        rootView.wv_weather.setWeatherIcon(Integer.valueOf(weatherCurrent.weatherIcon))
         rootView.main_layout.isRefreshing = false
     }
 
@@ -145,7 +148,19 @@ class WeatherFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener{
         }
     }
     override fun onRefresh() {
-        viewModel.updateWeatherInfo()
+        if (isNetworkConnected()) {
+            viewModel.updateWeatherInfo()
+        }
+        else{
+            val snackBar = Snackbar.make(rootView, "No Internet connection!!.", Snackbar.LENGTH_SHORT)
+            snackBar.setActionTextColor(getResources().getColor(R.color.white))
+            snackBar.show()
+        }
+    }
+
+    private fun isNetworkConnected(): Boolean {
+        val cm = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        return cm.getActiveNetworkInfo() != null
     }
 }
 

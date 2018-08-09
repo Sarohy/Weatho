@@ -6,5 +6,6 @@
     <color name="blue_background">#4bccff</color>
     <color name="bg_row_background">#fa315b</color>
     <color name="background">#ffffff</color>
+    <color name="white">#ffffff</color>
     <color name="forecastBackground">#FEF6EB</color>
 </resources>

@@ -9,7 +9,6 @@ import com.sarohy.weatho.weatho.Model.APIModel.HourForecast;
 import java.util.ArrayList;
 
 import io.reactivex.Observable;
-import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -17,19 +16,19 @@ import retrofit2.http.Query;
 @SuppressWarnings("SpellCheckingInspection")
 public interface APIInterface {
     @GET("locations/v1/cities/autocomplete")
-    Call<ArrayList<City>> getCities(@Query("apikey") String apiKey, @Query("q") String value);
+    Observable<ArrayList<City>> getCities(@Query("apikey") String apiKey, @Query("q") String value);
 
     @GET("forecasts/v1/daily/5day/{id}")
-    Call<DayForecastList> getForecastOf5Day(@Path("id") String cId, @Query("apikey") String apiKey);
+    Observable<DayForecastList> getForecastOf5Day(@Path("id") String cId, @Query("apikey") String apiKey);
 
     @GET("forecasts/v1/hourly/12hour/{id}")
-    Call<ArrayList<HourForecast>> get12HoursForecast(@Path("id") String cId, @Query("apikey") String apiKey);
+    Observable<ArrayList<HourForecast>> get12HoursForecast(@Path("id") String cId, @Query("apikey") String apiKey);
 
     @GET("currentconditions/v1/{id}")
     Observable<ArrayList<CurrentWeather>> getCurrentUpdate(@Path("id") String cId, @Query("apikey") String apiKey);
 
     @GET("locations/v1/cities/geoposition/search")
-    Call<City> getCity(@Query("apikey") String apiKey,@Query("q") String value);
+    Observable<City> getCity(@Query("apikey") String apiKey,@Query("q") String value);
 
 
 }

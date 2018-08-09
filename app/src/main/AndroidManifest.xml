@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -14,7 +15,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".View.Activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -30,7 +30,6 @@
             android:name=".View.Activity.DetailWeatherActivity"
             android:label="@string/title_activity_detail_weather"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Test.Test2Activity" />
 
         <receiver
             android:name=".WeatherUpdateReceiver"
@@ -42,8 +41,9 @@
             android:name=".WeatherFetchService"
             android:exported="false" />
 
-        <activity android:name=".View.Activity.SplashActivity"
-            android:theme="@style/SplashTheme" >
+        <activity
+            android:name=".View.Activity.SplashActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -60,6 +60,11 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/weather_widget_info" />
         </receiver>
+
+        <activity
+            android:name=".View.Activity.WeatherDeatilActivity"
+            android:label="@string/title_activity_weather_deatil"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

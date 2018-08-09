@@ -17,7 +17,7 @@ public class GeoLocationViewModel extends AndroidViewModel implements ProjectRep
     private final MutableLiveData<Location> locationMutableLiveData = new MutableLiveData<>();
     public GeoLocationViewModel(@NonNull Application application) {
         super(application);
-        projectRepository = new ProjectRepository(application);
+        projectRepository = new ProjectRepository();
     }
     public void fetchLocation(String lat, String log){
         projectRepository.fetchLocationByGeo(lat+","+log, this);
@@ -30,7 +30,7 @@ public class GeoLocationViewModel extends AndroidViewModel implements ProjectRep
 
     @Override
     public void onLocationFetchedByGeo(Location location) {
-        locationMutableLiveData.setValue(location);
+        locationMutableLiveData.postValue(location);
     }
 
     public LiveData<Location> getLocation() {

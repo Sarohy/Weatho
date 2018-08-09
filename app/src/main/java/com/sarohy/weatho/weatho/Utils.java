@@ -176,6 +176,11 @@ public class Utils {
         return df.format(date);
     }
 
+    public static String DateToTimeString(@Nullable Date date) {
+        @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+        return df.format(date);
+    }
+
     public static WeatherCurrent currentWeatherAPItoDB(String cityKey,
                                                        CurrentWeather currentWeather) {
         WeatherCurrent currentWeatherUpdate = new WeatherCurrent();
@@ -287,11 +292,12 @@ public class Utils {
             date1 = Calendar.getInstance().getTime();
         }
         Date date2 = Calendar.getInstance().getTime();
-        return String.valueOf(getDateDiff(date1,date2, TimeUnit.MINUTES));
+        return String.valueOf(getDateDiff(date1,date2, TimeUnit.MINUTES))+" min ago";
     }
 
     public static long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
         long diffInMillies = date2.getTime() - date1.getTime();
         return timeUnit.convert(diffInMillies,TimeUnit.MILLISECONDS);
     }
+
 }

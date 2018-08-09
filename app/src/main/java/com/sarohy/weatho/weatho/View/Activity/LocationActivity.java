@@ -41,6 +41,8 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
 
     @BindView(R.id.fab_add_location)
     FloatingActionButton fabAddLocation;
+    @BindView(R.id.fab_geo_location)
+    FloatingActionButton fabGeoLocation;
     @BindView(R.id.rv_cities)
     RecyclerView rvCities;
 
@@ -69,6 +71,7 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void setup() {
+        fabGeoLocation.setOnClickListener(this);
         fabAddLocation.setOnClickListener(this);
         rvCities.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -121,10 +124,16 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
     @SuppressLint("RestrictedApi")
     @Override
     public void onClick(View v) {
+        Bundle bundle;
         switch (v.getId()){
             case R.id.fab_add_location:
-                Bundle bundle= ActivityOptions.makeSceneTransitionAnimation(activity).toBundle();
+                bundle = ActivityOptions.makeSceneTransitionAnimation(activity).toBundle();
                 startActivityForResult(new Intent(getApplication(), AddLocationActivity.class),REQUEST_CODE,bundle);
+                break;
+            case R.id.fab_geo_location:
+                bundle = ActivityOptions.makeSceneTransitionAnimation(activity).toBundle();
+                startActivityForResult(new Intent(getApplication(), GeoLocationActivity.class),REQUEST_CODE,bundle);
+                finish();
                 break;
         }
     }

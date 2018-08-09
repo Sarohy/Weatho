@@ -70,6 +70,11 @@ class MainActivity : AppCompatActivity() {
             Log.d(LOG_TAG, autoUpdate.toString())
             alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis + (1000 * 60 * autoUpdate).toLong(), (1000 * 60 * autoUpdate).toLong(), alarmIntent)
         }
+        else{
+            val intent = Intent(this, WeatherUpdateReceiver::class.java)
+            PendingIntent.getBroadcast(this, 0, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT).cancel()
+        }
     }
 
     private fun observers() {

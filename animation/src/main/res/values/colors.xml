@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="cloud_day_light">#92ece1e5</color>
+    <color name="cloud_day_dark">#a1dbd6d8</color>
+    <color name="cloud_night_light">#ba2f2f2f</color>
+    <color name="cloud_night_dark">#95464646</color>
+    <color name="whiteRing">#ffffff</color>
+    <color name="greenRing">#007043</color>
+    <color name="background_dark">#061324</color>
+    <color name="background_light">#4B97D1</color>
+</resources>

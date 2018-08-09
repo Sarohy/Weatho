@@ -17,13 +17,7 @@ import com.sarohy.weatho.weatho.View.Activity.MainActivity;
 import java.util.ArrayList;
 import java.util.Date;
 
-/**
- * An {@link IntentService} subclass for handling asynchronous task requests in
- * a service on a separate handler thread.
- * <p>
- * TODO: Customize class - update intent actions, extra parameters and static
- * helper methods.
- */
+
 public class WeatherFetchService extends IntentService {
 
     private final ArrayList<Location> locations = new ArrayList<>();
@@ -32,13 +26,14 @@ public class WeatherFetchService extends IntentService {
         super("WeatherFetchService");
     }
 
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onHandleIntent(Intent intent) {
        // Thread.currentThread().getId() == Looper.getMainLooper().getThread().getId()
         if (intent != null) {
             Log.d("Tested", "In service");
-            ProjectRepository projectRepository = new ProjectRepository(getApplicationContext());
+            ProjectRepository projectRepository = new ProjectRepository();
              String cName = "Notification";
             int importance = 0;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {

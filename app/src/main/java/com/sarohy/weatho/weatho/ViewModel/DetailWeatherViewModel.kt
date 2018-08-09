@@ -9,20 +9,15 @@ import com.sarohy.weatho.weatho.Model.ProjectRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class DetailWeatherViewModel(application: Application, key:String) : AndroidViewModel(application) {
+class DetailWeatherViewModel(application: Application) : AndroidViewModel(application) {
     private var weatherDay: MutableLiveData<List<WeatherHour>> = MutableLiveData()
-    private var projectRepository: ProjectRepository = ProjectRepository(application)
-    var cityKey:String = key
-
-    init {
-        loadData()
-    }
-
+    private var projectRepository: ProjectRepository = ProjectRepository()
+    lateinit var cityKey:String
     private fun loadData() {
         projectRepository.loadHourlyDataFromDB(cityKey)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe ({ next->
+                ?.subscribeOn(Schedulers.newThread())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe ({ next->
                     weatherDay.value = next
                 },
                         {e->
@@ -37,6 +32,11 @@ class DetailWeatherViewModel(application: Application, key:String) : AndroidView
 
     fun updateWeatherInfo() {
         projectRepository.fetchHourlyData(cityKey)
+    }
+
+    fun setKey(key: String) {
+        cityKey =key
+        loadData()
     }
 
 }

@@ -12,7 +12,7 @@ import io.reactivex.schedulers.Schedulers
 
 class WeatherViewModel(application: Application,key:String) : AndroidViewModel(application) {
     private var weatherDay:MutableLiveData<List<WeatherDay>> = MutableLiveData()
-    private var projectRepository: ProjectRepository = ProjectRepository(application)
+    private var projectRepository: ProjectRepository = ProjectRepository()
     private var currentWeather: MutableLiveData<WeatherCurrent> = MutableLiveData()
     var cityKey:String = key
 
@@ -23,18 +23,18 @@ class WeatherViewModel(application: Application,key:String) : AndroidViewModel(a
     private fun loadData() {
 
         projectRepository.loadDayForecastFromDB(cityKey)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe ({ next->
+                ?.subscribeOn(Schedulers.newThread())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe ({ next->
                     weatherDay.value = next
                 },
                 {e->
                   e.printStackTrace()
                 })
         projectRepository.loadCurrentWeatherFromDB(cityKey)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ next->
+                ?.subscribeOn(Schedulers.newThread())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe({ next->
                     currentWeather.value = next
                 },
                         {e->

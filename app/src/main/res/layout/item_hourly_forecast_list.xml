@@ -26,7 +26,6 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-
                 android:id="@+id/iv_weather_icon"
                 android:layout_width="0dp"
                 android:layout_height="75dp"

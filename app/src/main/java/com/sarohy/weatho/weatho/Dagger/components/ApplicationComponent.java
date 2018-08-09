@@ -1,7 +1,6 @@
 package com.sarohy.weatho.weatho.Dagger.components;
 
 
-
 import com.bumptech.glide.RequestManager;
 import com.sarohy.weatho.weatho.Dagger.annotations.ApplicationScope;
 import com.sarohy.weatho.weatho.Dagger.modules.ContextModule;

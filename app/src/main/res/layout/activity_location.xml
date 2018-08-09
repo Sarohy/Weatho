@@ -24,4 +24,16 @@
         android:src="@drawable/ic_add_white_24dp"
         />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_geo_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="328dp"
+        android:src="@drawable/ic_location_on_white_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

@@ -6,11 +6,6 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-import com.sarohy.weatho.weatho.R;
-import com.sarohy.weatho.weatho.SharedPreferencesClass;
-import com.sarohy.weatho.weatho.Utils;
-import com.sarohy.weatho.weatho.WeathoApplication;
-
 /**
  * Implementation of App Widget functionality.
  */
@@ -31,12 +26,6 @@ public class WeatherWidget extends AppWidgetProvider {
         views.setTextViewText(R.id.tv_location, sharedPreferencesClass.getCityName());
         views.setTextViewText(R.id.tv_last_update, Utils.getLastUpdateTime(sharedPreferencesClass.getLastUpdateTime()));
         views.setImageViewResource(R.id.iv_weather_icon,Utils.getWeatherIcon(sharedPreferencesClass.getWeatherIcon()));
-//        AppWidgetTarget appWidgetTarget = new AppWidgetTarget( context,R.id.iv_weather_icon,views);
-//        Glide
-//                .with( context.getApplicationContext() )
-//                .load( Utils.getWeatherIconLink(sharedPreferencesClass.getWeatherIcon()))
-//                .into(appWidgetTarget).submit();
-
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
