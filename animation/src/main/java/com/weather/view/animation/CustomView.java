@@ -10,6 +10,7 @@ import android.content.res.TypedArray;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -33,11 +34,12 @@ public class CustomView extends FrameLayout {
     private int viewHeight;
     int amount=1000, size=0, speed=0;
     private int weathericon = 1;
-    public CustomView(Context context) {
+    public CustomView(Context context,int weather) {
         super(context);
+        weathericon = weather;
         init();
     }
-
+    View v;
     public CustomView(Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.MyCustomElement, 0, 0);
@@ -54,31 +56,42 @@ public class CustomView extends FrameLayout {
 
     public CustomView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
     }
 
     public CustomView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        init();
     }
+
+
     // 11
     private void init() {
-        inflate(getContext(), R.layout.custom_view, this);
-        findViews();
+        v = inflate(getContext(), R.layout.custom_view, this);
+
+        findViews(v);
+        for(int i=0;i<9;i++){
+            clouds[i].setVisibility(VISIBLE);
+        }
+        sumOrMoon.setVisibility(VISIBLE);
+        backgroud.setBackgroundColor(getResources().getColor(R.color.background_light));
         animateCloudAndSun();
         switch (weathericon){
-            case 1: case 2: //Sunny
+            case 1:  //Sunny
+                hideClouds();
+                break;
+            case 2:  //Sunny
                 hideClouds();
                 break;
             case 3: // Partly Cloudy
                 showLessCloud();
                 break;
-            case 4: case 6: // Mostly Cloudy and sun
+            case 4:  // Mostly Cloudy and sun
                 break;
             case 5:
                 showLessCloud();
                 amount = 5;
                 makeWind();
+                break;
+            case 6:
                 break;
             case 7: // Mostly Cloud, no sun
                 sumOrMoon.setVisibility(GONE);
@@ -124,12 +137,23 @@ public class CustomView extends FrameLayout {
                 amount = 1500;
                 makeRain(Animation.INFINITE);
                 break;
-            case 22: case 19://Snow
+            case 19://Snow
                 amount = 700;
                 sumOrMoon.setVisibility(GONE);
                 makeSnow(Animation.INFINITE);
                 break;
-            case 23: case 20 : case 21://Mostly Cloudy and Snow
+            case 22://Snow
+                amount = 700;
+                sumOrMoon.setVisibility(GONE);
+                makeSnow(Animation.INFINITE);
+                break;
+            case 23://Mostly Cloudy and Snow
+                displaySunOrMoonThenSnow(4000,700);
+                break;
+            case 20 ://Mostly Cloudy and Snow
+                displaySunOrMoonThenSnow(4000,700);
+                break;
+            case 21://Mostly Cloudy and Snow
                 displaySunOrMoonThenSnow(4000,700);
                 break;
             case 26: // freezing rain
@@ -137,7 +161,10 @@ public class CustomView extends FrameLayout {
                 amount = 1200;
                 makeRain(Animation.INFINITE);
                 break;
-            case 25: case 29://Rain and snow
+            case 25://Rain and snow
+                sumOrMoon.setVisibility(GONE);
+                amount = 500;
+            case 29://Rain and snow
                 sumOrMoon.setVisibility(GONE);
                 amount = 500;
                 makeSnow(Animation.INFINITE);
@@ -164,13 +191,22 @@ public class CustomView extends FrameLayout {
                 break;
         }
         switch (weathericon) {
-            case 33: case 34: //Clear Night
+            case 33: //Clear Night
                 hideClouds();
                 sumOrMoon.setVisibility(GONE);
                 clearMoon.setVisibility(VISIBLE);
                 clearMoonAnimation();
                 break;
-            case 35: case 36: // Partly Cloudy
+            case 34: //Clear Night
+                hideClouds();
+                sumOrMoon.setVisibility(GONE);
+                clearMoon.setVisibility(VISIBLE);
+                clearMoonAnimation();
+                break;
+            case 35:  // Partly Cloudy
+                showLessCloud();
+                break;
+            case 36: // Partly Cloudy
                 showLessCloud();
                 break;
             case 37:
@@ -194,7 +230,10 @@ public class CustomView extends FrameLayout {
             case 42: // Mostly Cloud and storm
                 displaySunOrMoonThenStorm(2000,700,getResources().getColor(R.color.background_dark));
                 break;
-            case 44:case 43://  Mostly Cloud and Snow
+            case 44://  Mostly Cloud and Snow
+                displaySunOrMoonThenSnow(2000,500);
+                break;
+            case 43://  Mostly Cloud and Snow
                 displaySunOrMoonThenSnow(2000,500);
                 break;
         }
@@ -351,34 +390,30 @@ public class CustomView extends FrameLayout {
         for(int i=6;i<9;i++){
             clouds[i].setAnimation(mAnimation3);
         }
-
+        animationSetSunOrMoon.reset();
         Animation rotateAnimation = new RotateAnimation(0.0f, 360.0f,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
                 0.5f);
-        rotateAnimation.setDuration(1500);
+        rotateAnimation.setDuration(2500);
         rotateAnimation.setRepeatCount(Animation.INFINITE);
         rotateAnimation.setRepeatMode(Animation.RELATIVE_TO_SELF);
         animationSetSunOrMoon.addAnimation(rotateAnimation);
         sumOrMoon.startAnimation(animationSetSunOrMoon);
     }
-    private void findViews() {
-        this.clouds[0] = findViewById(R.id.iv_cloud1);
-        this.clouds[1] = findViewById(R.id.iv_cloud2);
-        this.clouds[2] = findViewById(R.id.iv_cloud3);
-        this.clouds[3] = findViewById(R.id.iv_cloud4);
-        this.clouds[4] = findViewById(R.id.iv_cloud5);
-        this.clouds[5] = findViewById(R.id.iv_cloud6);
-        this.clouds[6] = findViewById(R.id.iv_cloud7);
-        this.clouds[7] = findViewById(R.id.iv_cloud8);
-        this.clouds[8] = findViewById(R.id.iv_cloud9);
-        this.sumOrMoon = findViewById(R.id.iv_sun);
-        this.clearMoon = findViewById(R.id.iv_clear_moon);
-        this.backgroud = findViewById(R.id.rl_background);
-        for(int i=0;i<9;i++){
-            clouds[i].setVisibility(VISIBLE);
-        }
-        sumOrMoon.setVisibility(VISIBLE);
-        backgroud.setBackgroundColor(getResources().getColor(R.color.background_light));
+    private void findViews(View v) {
+        this.clouds[0] = v.findViewById(R.id.iv_cloud1);
+        this.clouds[1] = v.findViewById(R.id.iv_cloud2);
+        this.clouds[2] = v.findViewById(R.id.iv_cloud3);
+        this.clouds[3] = v.findViewById(R.id.iv_cloud4);
+        this.clouds[4] = v.findViewById(R.id.iv_cloud5);
+        this.clouds[5] = v.findViewById(R.id.iv_cloud6);
+        this.clouds[6] = v.findViewById(R.id.iv_cloud7);
+        this.clouds[7] = v.findViewById(R.id.iv_cloud8);
+        this.clouds[8] = v.findViewById(R.id.iv_cloud9);
+        this.sumOrMoon = v.findViewById(R.id.iv_sun);
+        this.clearMoon = v.findViewById(R.id.iv_clear_moon);
+        this.backgroud = v.findViewById(R.id.rl_background);
+
     }
     public void clearMoonAnimation(){
         Animation rotateAnimation = new RotateAnimation(0.0f, 360.0f,
@@ -578,6 +613,7 @@ public class CustomView extends FrameLayout {
     }
     public void setWeatherIcon(int weatherIcon) {
         weathericon = weatherIcon;
+        Log.d("Tested No", String.valueOf(weathericon));
         init();
     }
 }

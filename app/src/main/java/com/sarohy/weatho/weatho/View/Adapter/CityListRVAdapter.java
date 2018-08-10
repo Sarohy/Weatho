@@ -7,11 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.sarohy.weatho.weatho.Model.DBModel.Location;
 import com.sarohy.weatho.weatho.R;
+import com.sarohy.weatho.weatho.Utils;
 import com.sarohy.weatho.weatho.WeathoApplication;
 
 import java.util.List;
@@ -33,6 +35,8 @@ public class CityListRVAdapter extends RecyclerView.Adapter<CityListRVAdapter.My
         final ImageButton homeBtn;
         final RelativeLayout viewBackground;
         public final RelativeLayout viewForeground;
+        final TextView countryName;
+        final ImageView flagView;
         MyViewHolder(View view) {
             super(view);
             locationName = view.findViewById(R.id.tv_name);
@@ -40,6 +44,8 @@ public class CityListRVAdapter extends RecyclerView.Adapter<CityListRVAdapter.My
             viewBackground = view.findViewById(R.id.view_background);
             viewForeground = view.findViewById(R.id.view_foreground);
             homeBtn = view.findViewById(R.id.ib_is_home);
+            countryName = view.findViewById(R.id.tv_country_name);
+            flagView = view.findViewById(R.id.iv_flag);
         }
     }
 
@@ -60,7 +66,9 @@ public class CityListRVAdapter extends RecyclerView.Adapter<CityListRVAdapter.My
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         final Location city = dataListAllItems.get(position);
-        holder.locationName.setText(city.getDataToDisplay());
+        holder.locationName.setText(city.getLocalizedName());
+        holder.countryName.setText(city.getCountry());
+        WeathoApplication.component.getGlide().load(Utils.getFlagURL(city.getCountryCode())).into(holder.flagView);
         String homeKey = WeathoApplication.component.getSharedPrefs().getCityKey();
         if (city.getKey().equals(homeKey)){
             holder.homeBtn.setImageResource(R.drawable.ic_home_white_selected_24dp);

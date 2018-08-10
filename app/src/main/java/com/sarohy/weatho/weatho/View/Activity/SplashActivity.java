@@ -9,11 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import com.sarohy.weatho.weatho.WeathoApplication;
 
 public class SplashActivity extends AppCompatActivity {
-
-//    @BindView(R.id.tv_logo)
-//    TextView tvLogo;
-//    @BindView(R.id.tv_footer)
-//    TextView tvFooter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

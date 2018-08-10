@@ -24,6 +24,7 @@ public class CityRVAdapter extends RecyclerView.Adapter<CityRVAdapter.MyViewHold
     public class MyViewHolder extends RecyclerView.ViewHolder {
         final TextView  name;
 
+
         MyViewHolder(View view) {
             super(view);
             name = view.findViewById(R.id.tv_text);

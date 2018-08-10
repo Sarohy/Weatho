@@ -22,6 +22,9 @@ public class Location implements Serializable {
     @ColumnInfo(name = "Country")
     private String Country;
 
+    @ColumnInfo(name = "CountryCode")
+    private String CountryCode;
+
 
     @NonNull
     public String getKey ()
@@ -34,11 +37,12 @@ public class Location implements Serializable {
         this.Key = Key;
     }
 
-    public Location(@NonNull String key, String administrativeArea, String localizedName, String country) {
+    public Location(@NonNull String key, String administrativeArea, String localizedName, String country, String countryCode) {
         Key = key;
         AdministrativeArea = administrativeArea;
         LocalizedName = localizedName;
         Country = country;
+        CountryCode = countryCode;
     }
 
     @Override
@@ -80,4 +84,11 @@ public class Location implements Serializable {
     public Location() {
     }
 
+    public String getCountryCode() {
+        return CountryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        CountryCode = countryCode;
+    }
 }

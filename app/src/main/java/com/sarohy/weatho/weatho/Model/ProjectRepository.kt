@@ -20,16 +20,16 @@ import io.reactivex.schedulers.Schedulers
 import java.util.*
 import javax.inject.Inject
 
-public class ProjectRepository {
+class ProjectRepository {
     private val LOG_TAG = ProjectRepository::class.java.simpleName
 
     @Inject
     lateinit var appDatabase: AppDatabase
     @Inject
     lateinit var apiService: APIInterface
-    private val API_KEY: String
+    private val API_KEY: String = Utils.getAPIKey()
+
     init {
-        this.API_KEY = Utils.getAPIKey()
         WeathoApplication.component.injectRepo(this)
     }
 
@@ -122,7 +122,7 @@ public class ProjectRepository {
     }
 
     @SuppressLint("CheckResult")
-    fun loadDataASynchronous(locations: ArrayList<Location>): String {
+    fun loadDataSynchronous(locations: ArrayList<Location>): String {
         val arrayList = ArrayList<String>()
         for (i in locations.indices) {
             val cityKey = locations[i].key

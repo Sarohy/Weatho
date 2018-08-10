@@ -21,10 +21,7 @@ class HourForecastRVAdapter(citiesList: ArrayList<WeatherHour>) : RecyclerView.A
         var temperature: TextView = view.tv_forecast_temperature
         var time: TextView = view.tv_forecast_time
         var phrase: TextView = view.tv_phrase
-        var tempImage:ImageView
-        init {
-            tempImage = view.iv_weather_icon
-        }
+        var tempImage:ImageView = view.iv_weather_icon
     }
 
 
@@ -55,5 +52,9 @@ class HourForecastRVAdapter(citiesList: ArrayList<WeatherHour>) : RecyclerView.A
     fun setArray(fetches: List<WeatherHour>?) {
         dataListAllItems.clear()
         dataListAllItems.addAll(fetches!!)
+    }
+
+    fun getItem(position: Int): WeatherHour {
+        return dataListAllItems[position]
     }
 }

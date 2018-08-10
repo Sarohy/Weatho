@@ -1,6 +1,5 @@
 package com.sarohy.weatho.weatho.View.Activity
 
-import android.app.ActivityOptions
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.arch.lifecycle.LifecycleOwner
@@ -19,27 +18,31 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.ViewGroup
+import android.widget.LinearLayout
+import com.sarohy.weatho.weatho.*
 import com.sarohy.weatho.weatho.Model.DBModel.Location
-import com.sarohy.weatho.weatho.R
-import com.sarohy.weatho.weatho.SharedPreferencesClass
+import com.sarohy.weatho.weatho.Model.DBModel.WeatherCurrent
 import com.sarohy.weatho.weatho.View.Fragment.WeatherFragment
 import com.sarohy.weatho.weatho.ViewModel.MainActivityViewModel
-import com.sarohy.weatho.weatho.WeatherUpdateReceiver
+import com.weather.view.animation.CustomView
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), WeatherFragment.CallBack {
+
 
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
     private lateinit var viewModel: MainActivityViewModel
+    private lateinit var mainActivity: MainActivity
     private val LOG_TAG = MainActivity::class.java.simpleName + "Test: In Detail Fragment"
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
+        mainActivity = this
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         init()
@@ -95,13 +98,11 @@ class MainActivity : AppCompatActivity() {
         val id = item.itemId
 
         if (id == R.id.action_settings) {
-            val bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
-            startActivity(Intent(this, SettingActivity::class.java), bundle)
+            startActivity(Intent(this, SettingActivity::class.java))
             return true
         }
         if (id == R.id.action_location) {
-            val bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
-            startActivity(Intent(this, LocationActivity::class.java), bundle)
+            startActivity(Intent(this, LocationActivity::class.java))
             return true
         }
 
@@ -114,7 +115,7 @@ class MainActivity : AppCompatActivity() {
         var array:ArrayList<Location> = ArrayList()
 
         override fun getItem(position: Int): Fragment {
-            val f = WeatherFragment.newInstance(array[position])
+            val f = WeatherFragment.newInstance(array[position],mainActivity)
             f.retainInstance = true
             return f
         }
@@ -141,8 +142,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onResume() {
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out)
         alarmManager()
         mSectionsPagerAdapter?.update()
         super.onResume()
+    }
+    override fun sendDataToMain(weatherCurrent: WeatherCurrent, location: Location) {
+        tv_location.text = location.localizedName
+        var customView:CustomView= CustomView(this,Integer.valueOf(weatherCurrent.weatherIcon))
+        customView.layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT)
+        weather_view.removeAllViews()
+        weather_view.addView(customView)
+        WeathoApplication.component.glide.load(Utils.getFlagURL(location.countryCode)).into(iv_flag)
+        toolbar.title =""
     }
 }

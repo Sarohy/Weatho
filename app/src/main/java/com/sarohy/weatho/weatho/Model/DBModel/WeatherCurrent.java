@@ -6,6 +6,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
@@ -13,7 +14,7 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 @Entity(tableName = "WeatherCurrent",foreignKeys = @ForeignKey(entity = Location.class,
         parentColumns = "Key",
         childColumns = "CityKey", onDelete = CASCADE))
-public class WeatherCurrent {
+public class WeatherCurrent implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private int key;
 

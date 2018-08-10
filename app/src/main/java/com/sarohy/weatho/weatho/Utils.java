@@ -137,9 +137,12 @@ public class Utils {
 
     public static Location cityAPItoDB(City c){
         return new Location(c.getKey(),c.getAdministrativeArea().getLocalizedName(),
-                c.getLocalizedName(),c.getCountry().getLocalizedName());
+                c.getLocalizedName(),c.getCountry().getLocalizedName(),c.getCountry().getID());
     }
 
+    public static String getFlagURL(String countrCode){
+        return "https://www.countryflags.io/"+countrCode.toLowerCase()+"/shiny/64.png";
+    }
     public static WeatherDay weatherAPItoDB(String cityKey,DayForecast d) {
         WeatherDay weatherDay = new WeatherDay();
         Day day = d.getDay();

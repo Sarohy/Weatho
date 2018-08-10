@@ -14,10 +14,14 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:configChanges="orientation"
+        android:screenOrientation="portrait"
         android:theme="@style/AppTheme">
         <activity
             android:name=".View.Activity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
         <activity android:name=".View.Activity.LocationActivity" />
         <activity
             android:name=".View.Activity.AddLocationActivity"
@@ -26,11 +30,6 @@
             android:name=".View.Activity.SettingActivity"
             android:label="@string/title_activity_settings" />
         <activity android:name=".View.Activity.GeoLocationActivity" />
-        <activity
-            android:name=".View.Activity.DetailWeatherActivity"
-            android:label="@string/title_activity_detail_weather"
-            android:theme="@style/AppTheme.NoActionBar" />
-
         <receiver
             android:name=".WeatherUpdateReceiver"
             android:enabled="true"
@@ -64,7 +63,7 @@
         <activity
             android:name=".View.Activity.WeatherDeatilActivity"
             android:label="@string/title_activity_weather_deatil"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

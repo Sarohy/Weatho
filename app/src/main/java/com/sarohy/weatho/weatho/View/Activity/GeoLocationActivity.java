@@ -60,7 +60,6 @@ public class GeoLocationActivity extends AppCompatActivity implements
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
     private LocationRequest mLocationRequest;
-
     private GeoLocationViewModel viewModel;
 
     @Override

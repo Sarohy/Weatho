@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/appbar_padding_top"
+        android:background="@android:color/transparent"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
@@ -20,18 +21,42 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="@string/app_name">
+            android:background="@android:color/transparent"
+            app:layout_scrollFlags="scroll|enterAlways">
+            <ImageView
+                android:id="@+id/iv_flag"
+                tools:src="@drawable/ic_location_on_black_48dp"
+                android:layout_width="50dp"
+                android:layout_height="40dp" />
+            <TextView
+                android:layout_toEndOf="@id/iv_flag"
+                android:id="@+id/tv_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@android:color/white"
+                android:maxLines="1"
+                android:gravity="center"
+                android:textSize="20sp"
+                tools:text="Hello" />
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/container"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/weather_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </LinearLayout>
+        <android.support.v4.view.ViewPager
+            android:layout_marginTop="200dp"
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

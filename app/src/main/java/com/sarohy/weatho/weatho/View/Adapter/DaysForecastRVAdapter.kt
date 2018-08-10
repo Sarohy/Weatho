@@ -8,12 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.request.RequestOptions
 import com.sarohy.weatho.weatho.Model.DBModel.WeatherDay
 import com.sarohy.weatho.weatho.R
 import com.sarohy.weatho.weatho.Utils
-import kotlinx.android.synthetic.main.item_day_forecast_list.view.*
-import com.bumptech.glide.request.RequestOptions
 import com.sarohy.weatho.weatho.WeathoApplication
+import kotlinx.android.synthetic.main.item_day_forecast_list.view.*
 
 
 class DaysForecastRVAdapter(citiesList: ArrayList<WeatherDay>, context: Activity) : RecyclerView.Adapter<DaysForecastRVAdapter.MyViewHolder>() {
@@ -23,14 +23,9 @@ class DaysForecastRVAdapter(citiesList: ArrayList<WeatherDay>, context: Activity
         var temperature: TextView = view.tv_forecast_temp
         var date: TextView = view.tv_forecast_date
         var dayImage:ImageView = view.iv_day
-        var nightImage:ImageView
-        var dayPhrase:TextView
-        var nightPhrase:TextView
-        init {
-            nightImage = view.iv_night
-            dayPhrase = view.tv_day_phrase
-            nightPhrase = view.tv_night_phrase
-        }
+        var nightImage:ImageView = view.iv_night
+        var dayPhrase:TextView = view.tv_day_phrase
+        var nightPhrase:TextView = view.tv_night_phrase
     }
 
 
@@ -66,5 +61,9 @@ class DaysForecastRVAdapter(citiesList: ArrayList<WeatherDay>, context: Activity
     fun updateList(fetch: List<WeatherDay>) {
         dataListAllItems.clear()
         dataListAllItems.addAll(fetch)
+    }
+
+    fun getItem(position: Int): WeatherDay {
+        return dataListAllItems[position]
     }
 }

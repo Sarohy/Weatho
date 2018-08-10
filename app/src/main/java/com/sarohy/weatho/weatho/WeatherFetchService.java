@@ -50,7 +50,7 @@ public class WeatherFetchService extends IntentService {
                 notificationManager.createNotificationChannel(notificationChannel);
             }
             projectRepository.loadLocationFromDB(locations);
-            String str = projectRepository.loadDataASynchronous(locations);
+            String str = projectRepository.loadDataSynchronous(locations);
 
             Notification n  = new Notification.Builder(this)
                     .setContentTitle("Weather Syncing Completed")

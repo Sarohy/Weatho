@@ -15,7 +15,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -58,6 +57,7 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
+        overridePendingTransition(R.anim.slide_down, R.anim.slide_up);
         ButterKnife.bind(this);
         init();
     }
@@ -76,7 +76,6 @@ public class LocationActivity extends AppCompatActivity implements View.OnClickL
         rvCities.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rvCities.setLayoutManager(mLayoutManager);
-        rvCities.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         rvCities.setItemAnimator(new DefaultItemAnimator());
         rvCities.setAdapter(cityListRVAdapter);
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT,this);

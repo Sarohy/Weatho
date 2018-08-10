@@ -1,15 +1,18 @@
 package com.sarohy.weatho.weatho.View.Activity
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.preference.*
+import android.preference.ListPreference
+import android.preference.Preference
+import android.preference.PreferenceFragment
+import android.preference.PreferenceManager
+import android.support.v7.app.AppCompatActivity
 import com.sarohy.weatho.weatho.R
 
 class SettingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        overridePendingTransition(R.anim.slide_down, R.anim.slide_up)
         if (fragmentManager.findFragmentById(android.R.id.content) == null) {
             fragmentManager.beginTransaction()
                     .add(android.R.id.content, SettingsFragment()).commit()
